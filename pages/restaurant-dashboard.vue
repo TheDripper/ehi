@@ -3,6 +3,39 @@
     <div :class="classes"></div>
     <div id="page" class="">
       <h1>{{ page.name }}</h1>
+      <h2>{{ page.type }}</h2>
+      <select name="foodType" v-model="resttype">
+        <option>Indian</option>
+        <option>Vietnamese</option>
+        <option>BBQ</option>
+      </select>
+      <img :src="page.media" class="feat w-1/5" />
+      <div class="container flex">
+        <hr />
+        <div class="large-12 medium-12 small-12 cell">
+          <label
+            >File Preview
+            <input
+              type="file"
+              id="file"
+              accept="image/*"
+              @change="handleFileUpload($event)"
+            />
+          </label>
+          <img class="w-1/3" v-bind:src="imagePreview" v-show="showPreview" />
+        </div>
+      </div>
+
+      <p>{{ page.address }}</p>
+      <input type="text" v-model="restaddress" />
+      <p>{{ page.city }}, {{ page.state }}</p>
+      <input type="text" v-model="restcity" />
+      <input type="text" v-model="reststate" />
+      <p>{{ page.hours }}</p>
+      <input type="text" name="hours" v-model="resthours" />
+      <p>{{ page.blurb }}</p>
+      <textarea class="blurb" v-model="restblurb">{{ page.blurb }}</textarea>
+      <input type="submit" value="Update Profile" @click="sendSub" />
       <ul>
         <li v-for="post in posts">
           {{ post.title.rendered }} | {{ post.status }}
@@ -32,6 +65,21 @@ export default {
   //   }
   // },
   created() {},
+  data() {
+    return {
+      restaddress: "",
+      restaddress2: "",
+      restcity: "",
+      reststate: "",
+      restzip: "",
+      resttype: "",
+      resthours: "",
+      restblurb: "",
+      file: "",
+      showPreview: false,
+      imagePreview: "",
+    };
+  },
   mounted() {
     // $("a").each(function () {
     //   $(this).attr("target", "_blank");
@@ -71,6 +119,89 @@ export default {
       // });
     });
   },
+  methods: {
+    ...mapActions(['setPage']),
+    async sendSub() {
+      let wp = new wpapi({
+        endpoint: "https://eathereindy.nfshost.com/wp-json",
+        username: "tylerhillwebdev",
+        password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
+        auth: true,
+      });
+      // let restData = {
+      //   name: this.restName,
+      //   address: this.restAddress,
+      //   address2: this.restAdress2,
+      //   city: this.restCity,
+      //   state: this.restState,
+      //   zip: this.restZip,
+      //   category: this.foodType,
+      //   hours: this.hours,
+      //   blurb: this.blurb,
+      // };
+      let pageClone = {};
+      // let newPage = Object.assign(this.page,pageClone);
+      // console.log('newPage',newPage);
+      for (let item in this.page) {
+        let restitem = "rest" + item;
+        if (this[restitem] !== "" && typeof this[restitem] !== "undefined") {
+          console.log(restitem, this[restitem]);
+          pageClone[item] = this[restitem];
+        } else {
+          pageClone[item] = this.page[item];
+        }
+      }
+      let title = this.page.name;
+      console.log("pageClone", pageClone);
+      let restSend = JSON.stringify(pageClone);
+      let updatePage = await wp.pages().author(this.loggedin).get();
+      updatePage = updatePage[0];
+      let updated = await wp.pages().id(updatePage.id).update({
+        content: restSend,
+      });
+      console.log('updated',updated);
+      if (this.file) {
+        let logo = await wp.media().file(this.file).create({
+          title: title,
+          post: updatePage.id,
+        });
+        let feat = await wp.pages().id(updatePage.id).update({
+          featured_media: logo.id,
+        });
+        let logoSrc = await wp.media().id(logo.id).get();
+        console.log("logoid", logo.id);
+        console.log("logosrc", logoSrc);
+        pageClone.media = logoSrc.guid.rendered;
+        restSend = JSON.stringify(pageClone);
+      }
+      this.setPage(pageClone);
+      // this.$router.push({
+      //   path: "/restaurant-dashboard",
+      // });
+    },
+    handleFileUpload(event) {
+      this.file = event.target.files[0];
+      let reader = new FileReader();
+      reader.addEventListener(
+        "load",
+        function () {
+          this.showPreview = true;
+          this.imagePreview = reader.result;
+        }.bind(this),
+        false
+      );
+      if (this.file) {
+        if (/\.(jpe?g|png|gif)$/i.test(this.file.name)) {
+          /*
+							Fire the readAsDataURL method which will read the file in and
+							upon completion fire a 'load' event which we will listen to and
+							display the image in the preview.
+						*/
+          reader.readAsDataURL(this.file);
+        }
+      }
+    },
+  },
   computed: {
     ajax() {
       return this.$store.state.ajax;
@@ -92,7 +223,7 @@ export default {
         if (post.author == this.loggedin) {
           if (post.featured_media) {
             let feat = wp.media().id(post.featured_media).get();
-          post.feat = feat;
+            post.feat = feat;
           }
           myPosts.push(post);
         }

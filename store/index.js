@@ -89,6 +89,9 @@ export const actions = {
   //   //  const page = await this.$axios.$get("/wp-json/wp/v2/pages/"+id);
   //    return page
   //  },
+  setPage({commit, state}, page) {
+    commit("myPage",page);
+  },
   setUser({ commit, state }, loggedin) {
     commit("loggedin", loggedin);
     // set myPosts

@@ -48,7 +48,6 @@ Quick blurb abour your spot...</textarea
         </div>
       </div>
       <input type="submit" value="Register" @click="sendSub" />
-      <Multifile />
     </div>
   </div>
 </template>
@@ -211,7 +210,7 @@ export default {
         city: this.restCity,
         state: this.restState,
         zip: this.restZip,
-        category: this.foodType,
+        type: this.foodType,
         hours: this.hours,
         blurb: this.blurb,
       };
