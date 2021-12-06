@@ -13,13 +13,12 @@
           h-screen
           w-screen
           bg-burnt
-          flex
-          flex-col
+          flex flex-col
           items-center
           justify-center
         "
       >
-      <h1>Loading...</h1>
+        <h1>Loading...</h1>
       </div>
       <h1>{{ page.name }}</h1>
       <h2>{{ page.type }}</h2>
@@ -149,20 +148,7 @@ export default {
         password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
         auth: true,
       });
-      // let restData = {
-      //   name: this.restName,
-      //   address: this.restAddress,
-      //   address2: this.restAdress2,
-      //   city: this.restCity,
-      //   state: this.restState,
-      //   zip: this.restZip,
-      //   category: this.foodType,
-      //   hours: this.hours,
-      //   blurb: this.blurb,
-      // };
       let pageClone = {};
-      // let newPage = Object.assign(this.page,pageClone);
-      // console.log('newPage',newPage);
       for (let item in this.page) {
         let restitem = "rest" + item;
         if (this[restitem] !== "" && typeof this[restitem] !== "undefined") {
@@ -194,6 +180,9 @@ export default {
         console.log("logosrc", logoSrc);
         pageClone.media = logoSrc.guid.rendered;
         restSend = JSON.stringify(pageClone);
+        let updated = await wp.pages().id(updatePage.id).update({
+          content: restSend,
+        });
       }
       this.setPage(pageClone);
       this.loading = false;
