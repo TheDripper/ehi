@@ -2,6 +2,25 @@
   <div id="root" class="testtttt">
     <div :class="classes"></div>
     <div id="page" class="">
+      <div
+        v-if="loading"
+        id="loading"
+        class="
+          z-30
+          absolute
+          top-0
+          left-0
+          h-screen
+          w-screen
+          bg-burnt
+          flex
+          flex-col
+          items-center
+          justify-center
+        "
+      >
+      <h1>Loading...</h1>
+      </div>
       <h1>{{ page.name }}</h1>
       <h2>{{ page.type }}</h2>
       <select name="foodType" v-model="resttype">
@@ -78,6 +97,7 @@ export default {
       file: "",
       showPreview: false,
       imagePreview: "",
+      loading: false,
     };
   },
   mounted() {
@@ -120,8 +140,9 @@ export default {
     });
   },
   methods: {
-    ...mapActions(['setPage']),
+    ...mapActions(["setPage"]),
     async sendSub() {
+      this.loading = true;
       let wp = new wpapi({
         endpoint: "https://eathereindy.nfshost.com/wp-json",
         username: "tylerhillwebdev",
@@ -159,7 +180,7 @@ export default {
       let updated = await wp.pages().id(updatePage.id).update({
         content: restSend,
       });
-      console.log('updated',updated);
+      console.log("updated", updated);
       if (this.file) {
         let logo = await wp.media().file(this.file).create({
           title: title,
@@ -175,6 +196,7 @@ export default {
         restSend = JSON.stringify(pageClone);
       }
       this.setPage(pageClone);
+      this.loading = false;
       // this.$router.push({
       //   path: "/restaurant-dashboard",
       // });
