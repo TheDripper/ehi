@@ -54,9 +54,9 @@
       <p>{{ page.blurb }}</p>
       <textarea class="blurb" v-model="restblurb">{{ page.blurb }}</textarea>
       <input type="submit" value="Update Profile" @click="sendSub" />
-      <ul>
+      <ul v-if="posts.length">
         <li v-for="post in posts">
-          {{ post.title.rendered }} | {{ post.status }}
+          {{ post }} 
         </li>
       </ul>
     </div>
@@ -221,25 +221,13 @@ export default {
       return this.$store.state.loggedin;
     },
     posts() {
-      let wp = new wpapi({
-        endpoint: "https://eathereindy.nfshost.com/wp-json",
-        username: "tylerhillwebdev",
-        password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
-        auth: true,
-      });
-      let allPosts = this.$store.state.posts;
-      let myPosts = [];
-      for (let post of allPosts) {
-        console.log(post.title, post.author);
-        if (post.author == this.loggedin) {
-          if (post.featured_media) {
-            let feat = wp.media().id(post.featured_media).get();
-            post.feat = feat;
-          }
-          myPosts.push(post);
-        }
+      let logged = this.$store.state.loggedin;
+      let authorPosts = this.$store.state.posts.authors[logged];
+      console.log(authorPosts);
+      if(authorPosts.length) {
+        return authorPosts;
       }
-      return myPosts;
+      return [];
     },
     page() {
       return this.$store.state.myPage;

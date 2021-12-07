@@ -7,7 +7,7 @@ export const state = () => ({
   footer: null,
   myPosts: [],
   myPage: null,
-  posts: [],
+  posts: null,
   pages: null,
   users: [],
   loggedin: 0,
@@ -89,33 +89,20 @@ export const actions = {
   //   //  const page = await this.$axios.$get("/wp-json/wp/v2/pages/"+id);
   //    return page
   //  },
-  setPage({commit, state}, page) {
-    commit("myPage",page);
+  setPage({ commit, state }, page) {
+    commit("myPage", page);
   },
   setUser({ commit, state }, loggedin) {
     commit("loggedin", loggedin);
     // set myPosts
-    let wp = new wpapi({
-      endpoint: "https://eathereindy.nfshost.com/wp-json",
-      username: "tylerhillwebdev",
-      password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
-      auth: true,
-    });
-    let allPosts = state.posts;
-    let myPosts = [];
-    for (let post of allPosts) {
-      if (post.author == state.loggedin) {
-        if (post.featured_media) {
-          let feat = wp.media().id(post.featured_media).get();
-          post.feat = feat;
-        }
-        myPosts.push(post);
-      }
-    }
+    // let wp = new wpapi({
+    //   endpoint: "https://eathereindy.nfshost.com/wp-json",
+    //   username: "tylerhillwebdev",
+    //   password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
+    //   auth: true,
+    // });
     let mySlug = state.pages.authors[loggedin];
     let myPage = state.pages[mySlug];
-    console.log(myPage);
-    commit("myPosts", myPosts);
     commit("myPage", myPage);
   },
   async nuxtServerInit({ commit }) {
@@ -160,6 +147,7 @@ export const actions = {
         urls.push({ link: slugLink, title: page.title.rendered });
       }
     }
+
     slugs["urls"] = urls;
     slugs["authors"] = authors;
     commit("pages", slugs);
@@ -200,8 +188,33 @@ export const actions = {
     // const restDash = await wp.pages().id(546).get();
     let restDash = "";
     commit("restDash", restDash);
-    const posts = await wp.posts().get();
-    commit("posts", posts);
+    const posts = await wp.posts().perPage(100).get();
+    for (let post of posts) {
+      let slugLink = "/posts/" + post.slug;
+      urls.push({ link: slugLink, title: post.title.rendered });
+    }
+    let postSlugs = {};
+    let postAuthors = {};
+    for (let post of posts) {
+      console.log(post);
+      var jstr = $("<div/>").html(post.content.rendered).text();
+      let postslugfix = post.slug.replace("-", "");
+      if (IsJsonString(post.content.rendered)) {
+        var obj = JSON.parse(jstr);
+        postSlugs[postslugfix] = obj;
+      } else {
+        postSlugs[postslugfix] = jstr;
+      }
+      let ary = postAuthors[post.author];
+      if (typeof ary !== "Array") {
+        ary = [];
+      }
+      ary.push(postslugfix);
+      postAuthors[post.author] = ary;
+    }
+    postSlugs["authors"] = postAuthors;
+    console.log("post slugs", postSlugs);
+    commit("posts", postSlugs);
     // if (process.env.NODE_ENV == "development") {
     //   const posts = await this.$axios.$get("/wp-json/wp/v2/pages");
     //   commit("posts", posts);
