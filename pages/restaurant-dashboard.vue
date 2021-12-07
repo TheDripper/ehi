@@ -56,7 +56,7 @@
       <input type="submit" value="Update Profile" @click="sendSub" />
       <h2>Posts</h2>
       <ul>
-        <li v-for="post in posts">{{ post }}</li>
+        <li v-for="post in posts"><NuxtLink :to="post.link">{{ post.title }}<img :src="post.media" /></NuxtLink></li>
       </ul>
     </div>
   </div>

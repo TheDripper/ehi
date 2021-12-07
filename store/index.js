@@ -218,14 +218,17 @@ export const actions = {
         postSlugs[postslugfix] = jstr;
       }
       let ary = postAuthors[post.author];
-      if (typeof ary !== "Array") {
+      if (typeof ary !== "object") {
         ary = [];
       }
+      console.log('post',post);
       let content = JSON.parse(post.content.rendered);
+      let link = '/posts/'+post.slug;
       let newSend = {
         slug: postslugfix,
         title: post.title.rendered,
         content: content,
+        link: link 
       };
       newSend = JSON.stringify(newSend);
       ary.push(newSend);
