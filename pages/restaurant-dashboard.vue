@@ -54,10 +54,9 @@
       <p>{{ page.blurb }}</p>
       <textarea class="blurb" v-model="restblurb">{{ page.blurb }}</textarea>
       <input type="submit" value="Update Profile" @click="sendSub" />
-      <ul v-if="posts.length">
-        <li v-for="post in posts">
-          {{ post }} 
-        </li>
+      <h2>Posts</h2>
+      <ul>
+        <li v-for="post in posts">{{ post }}</li>
       </ul>
     </div>
   </div>
@@ -221,13 +220,13 @@ export default {
       return this.$store.state.loggedin;
     },
     posts() {
-      let logged = this.$store.state.loggedin;
-      let authorPosts = this.$store.state.posts.authors[logged];
-      console.log(authorPosts);
-      if(authorPosts.length) {
-        return authorPosts;
+      let logged = this.loggedin;
+      let mine = this.$store.state.posts.authors[logged];
+      let loadMine = [];
+      for (let item of mine) {
+        loadMine.push(JSON.parse(item));
       }
-      return [];
+      return loadMine;
     },
     page() {
       return this.$store.state.myPage;

@@ -3,6 +3,7 @@ import wpapi from "wpapi";
 import { decode } from "html-entities";
 import $ from "cheerio";
 export const state = () => ({
+  search: [],
   header: null,
   footer: null,
   myPosts: [],
@@ -42,6 +43,9 @@ export const mutations = {
   },
   pages(state, pages) {
     state.pages = pages;
+  },
+  search(state, search) {
+    state.search = search;
   },
   users(state, users) {
     state.users = users;
@@ -126,6 +130,7 @@ export const actions = {
     const pages = await wp.pages().perPage(100).get();
     let slugs = {};
     let urls = [];
+    let search = [];
     let authors = {};
     for (let page of pages) {
       var jstr = $("<div/>").html(page.content.rendered).text();
@@ -142,6 +147,12 @@ export const actions = {
       if (page.author !== 1) {
         let slugLink = "/spots/" + page.slug;
         urls.push({ link: slugLink, title: page.title.rendered });
+        let feat = await wp.media().id(page.featured_media).get();
+        search.push({
+          link: slugLink,
+          title: page.title.rendered,
+          media: feat.guid.rendered,
+        });
       } else {
         let slugLink = "/" + page.slug;
         urls.push({ link: slugLink, title: page.title.rendered });
@@ -151,6 +162,7 @@ export const actions = {
     slugs["urls"] = urls;
     slugs["authors"] = authors;
     commit("pages", slugs);
+    commit("search", search);
 
     // const home = await wp.pages().id(5).get();
     let home = "";
@@ -209,7 +221,14 @@ export const actions = {
       if (typeof ary !== "Array") {
         ary = [];
       }
-      ary.push(postslugfix);
+      let content = JSON.parse(post.content.rendered);
+      let newSend = {
+        slug: postslugfix,
+        title: post.title.rendered,
+        content: content,
+      };
+      newSend = JSON.stringify(newSend);
+      ary.push(newSend);
       postAuthors[post.author] = ary;
     }
     postSlugs["authors"] = postAuthors;

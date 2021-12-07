@@ -133,12 +133,12 @@ export default {
       };
       if (this.file) {
         let logo = await wp.media().file(this.file).create({
-          title: title,
-          post: updatePage.id,
+          title: this.title,
+          // post: updatePage.id,
         });
-        let feat = await wp.pages().id(updatePage.id).update({
-          featured_media: logo.id,
-        });
+        // let feat = await wp.pages().id(updatePage.id).update({
+        //   featured_media: logo.id,
+        // });
         let logoSrc = await wp.media().id(logo.id).get();
         console.log("logoid", logo.id);
         console.log("logosrc", logoSrc);
