@@ -1,6 +1,24 @@
 <template>
   <div id="root" class="testtttt">
     <div :class="classes"></div>
+    <div
+      v-if="loading"
+      id="loading"
+      class="
+        z-30
+        absolute
+        top-0
+        left-0
+        h-screen
+        w-screen
+        bg-burnt
+        flex flex-col
+        items-center
+        justify-center
+      "
+    >
+      <h1>Loading...</h1>
+    </div>
     <div class="flex h-screen v-screen">
       <div class="flex flex-col p-4">
         <label class="text-2xl">Post Title</label>
@@ -94,6 +112,7 @@ export default {
       file: "",
       showPreview: false,
       imagePreview: "",
+      loading: false,
     };
   },
   methods: {
@@ -120,6 +139,7 @@ export default {
       }
     },
     async sendSub() {
+      this.loading = true;
       let wp = new wpapi({
         endpoint: "https://eathereindy.nfshost.com/wp-json",
         username: "tylerhillwebdev",
@@ -152,17 +172,7 @@ export default {
         status: "publish",
       });
       console.log(posts, posts.id);
-      // let formData = new FormData();
-      // formData.append("file", this.file);
-      // var filePath = "/path/to/the/image/to/upload.jpg";
-      // let logo = await wp.media().file(this.file).create({
-      //   title: this.title,
-      //   post: posts.id,
-      // });
-      // let feat = await wp.posts().id(posts.id).update({
-      //   featured_media: logo.id,
-      // });
-      // console.log(feat);
+      this.loading = false;
     },
   },
   computed: {
