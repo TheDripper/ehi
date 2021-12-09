@@ -106,6 +106,7 @@ export const actions = {
     //   auth: true,
     // });
     let mySlug = state.pages.authors[loggedin];
+    console.log(mySlug);
     let myPage = state.pages[mySlug];
     commit("myPage", myPage);
   },

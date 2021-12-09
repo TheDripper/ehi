@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/spots/sub", {data:[{}],fetch:{},mutations:[]});

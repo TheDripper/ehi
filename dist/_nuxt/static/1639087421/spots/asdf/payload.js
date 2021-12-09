@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/spots/asdf", {data:[{}],fetch:{},mutations:[]});

@@ -164,9 +164,9 @@ export default {
       let title = this.page.name;
       console.log("pageClone", pageClone);
       let restSend = JSON.stringify(pageClone);
-      let updatePage = await wp.pages().author(this.loggedin).get();
+      let updatePage = await wp.posts().author(this.loggedin).get();
       updatePage = updatePage[0];
-      let updated = await wp.pages().id(updatePage.id).update({
+      let updated = await wp.posts().id(updatePage.id).update({
         content: restSend,
       });
       console.log("updated", updated);
@@ -175,7 +175,7 @@ export default {
           title: title,
           post: updatePage.id,
         });
-        let feat = await wp.pages().id(updatePage.id).update({
+        let feat = await wp.posts().id(updatePage.id).update({
           featured_media: logo.id,
         });
         let logoSrc = await wp.media().id(logo.id).get();
@@ -183,7 +183,7 @@ export default {
         console.log("logosrc", logoSrc);
         pageClone.media = logoSrc.guid.rendered;
         restSend = JSON.stringify(pageClone);
-        let updated = await wp.pages().id(updatePage.id).update({
+        let updated = await wp.posts().id(updatePage.id).update({
           content: restSend,
         });
       }
