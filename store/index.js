@@ -127,7 +127,7 @@ export const actions = {
       auth: true,
     });
 
-    const pages = await wp.pages().perPage(100).get();
+    const pages = await wp.posts().perPage(100).get();
     let slugs = {};
     let urls = [];
     let search = [];
@@ -147,11 +147,11 @@ export const actions = {
       if (page.author !== 1) {
         let slugLink = "/spots/" + page.slug;
         urls.push({ link: slugLink, title: page.title.rendered });
-        let feat = await wp.media().id(page.featured_media).get();
+        // let feat = await wp.media().id(page.featured_media).get();
         search.push({
           link: slugLink,
           title: page.title.rendered,
-          media: feat.guid.rendered,
+          // media: feat.guid.rendered,
         });
       } else {
         let slugLink = "/" + page.slug;

@@ -56,7 +56,11 @@
       <input type="submit" value="Update Profile" @click="sendSub" />
       <h2>Posts</h2>
       <ul>
-        <li v-for="post in posts"><NuxtLink :to="post.link">{{ post.title }}<img :src="post.media" /></NuxtLink></li>
+        <li v-for="post in posts">
+          <NuxtLink :to="post.link"
+            >{{ post.title }}<img :src="post.media"
+          /></NuxtLink>
+        </li>
       </ul>
     </div>
   </div>
@@ -223,8 +227,10 @@ export default {
       let logged = this.loggedin;
       let mine = this.$store.state.posts.authors[logged];
       let loadMine = [];
-      for (let item of mine) {
-        loadMine.push(JSON.parse(item));
+      if (typeof mine !== "undefined") {
+        for (let item of mine) {
+          loadMine.push(JSON.parse(item));
+        }
       }
       return loadMine;
     },

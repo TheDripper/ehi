@@ -222,13 +222,13 @@ export default {
         password: this.restPass,
       });
       console.log(newUse);
-      let posts = await wp.pages().create({
+      let posts = await wp.posts().create({
         title: title,
         content: restSend,
         author: newUse.id,
         status: "publish",
+        tags: [182]
       });
-
       console.log(posts, posts.id);
       // let formData = new FormData();
       // formData.append("file", this.file);
@@ -237,7 +237,7 @@ export default {
         title: title,
         post: posts.id,
       });
-      let feat = await wp.pages().id(posts.id).update({
+      let feat = await wp.posts().id(posts.id).update({
         featured_media: logo.id,
       });
       let logoSrc = await wp.media().id(logo.id).get();
@@ -246,7 +246,7 @@ export default {
       restData["media"] = logoSrc.guid.rendered;
       restSend = JSON.stringify(restData);
       console.log(restSend);
-      let addImg = await wp.pages().id(posts.id).update({
+      let addImg = await wp.posts().id(posts.id).update({
         content: restSend,
       });
       console.log("addImg", addImg);
