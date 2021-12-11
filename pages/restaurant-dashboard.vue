@@ -164,7 +164,7 @@ export default {
       let title = this.page.name;
       console.log("pageClone", pageClone);
       let restSend = JSON.stringify(pageClone);
-      let updatePage = await wp.posts().author(this.loggedin).get();
+      let updatePage = await wp.posts().author(this.loggedin).category(183).get();
       updatePage = updatePage[0];
       let updated = await wp.posts().id(updatePage.id).update({
         content: restSend,

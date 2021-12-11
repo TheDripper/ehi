@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/spots/taste-222", {data:[{}],fetch:{},mutations:[]});

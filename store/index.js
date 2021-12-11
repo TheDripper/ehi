@@ -3,6 +3,7 @@ import wpapi from "wpapi";
 import { decode } from "html-entities";
 import $ from "cheerio";
 export const state = () => ({
+  facets: [],
   search: [],
   header: null,
   footer: null,
@@ -40,6 +41,9 @@ export const mutations = {
   },
   posts(state, posts) {
     state.posts = posts;
+  },
+  facets(state, facets) {
+    state.facets = facets;
   },
   pages(state, pages) {
     state.pages = pages;
@@ -106,12 +110,10 @@ export const actions = {
     //   auth: true,
     // });
     let mySlug = state.pages.authors[loggedin];
-    console.log(mySlug);
     let myPage = state.pages[mySlug];
     commit("myPage", myPage);
   },
   async nuxtServerInit({ commit }) {
-    console.log("init");
     function IsJsonString(str) {
       try {
         JSON.parse(str);
@@ -120,15 +122,16 @@ export const actions = {
       }
       return true;
     }
-    console.log("wp");
     let wp = new wpapi({
       endpoint: "https://eathereindy.nfshost.com/wp-json/",
       username: "tylerhillwebdev",
       password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
       auth: true,
     });
-
-    const pages = await wp.posts().perPage(100).get();
+    let facets = await wp.tags().perPage(100).get();
+    commit('facets',facets);
+    console.log('facets',facets);
+    const pages = await wp.posts().categories(183).perPage(100).get();
     let slugs = {};
     let urls = [];
     let search = [];
@@ -148,11 +151,17 @@ export const actions = {
       if (page.author !== 1) {
         let slugLink = "/spots/" + page.slug;
         urls.push({ link: slugLink, title: page.title.rendered });
-        // let feat = await wp.media().id(page.featured_media).get();
+        let cat = page.tags;
+        let { blurb } = JSON.parse(page.content.rendered);
+        let feat = 0;
+        if (page.media !== 0) {
+          feat = await wp.media().id(page.featured_media).get();
+        }
         search.push({
           link: slugLink,
           title: page.title.rendered,
-          // media: feat.guid.rendered,
+          media: feat.guid.rendered,
+          blurb: blurb
         });
       } else {
         let slugLink = "/" + page.slug;
@@ -171,7 +180,6 @@ export const actions = {
     let subscribe = "";
     commit("subscribe", subscribe);
     // const header = await wp.pages().id(1015).get();
-    console.log("slugs", slugs.header);
     let header = slugs.header;
     commit("header", header);
     // const footer = await wp.pages().id(1017).get();
@@ -209,7 +217,6 @@ export const actions = {
     let postSlugs = {};
     let postAuthors = {};
     for (let post of posts) {
-      console.log(post);
       var jstr = $("<div/>").html(post.content.rendered).text();
       let postslugfix = post.slug.replace("-", "");
       if (IsJsonString(post.content.rendered)) {
@@ -222,21 +229,19 @@ export const actions = {
       if (typeof ary !== "object") {
         ary = [];
       }
-      console.log('post',post);
       let content = JSON.parse(post.content.rendered);
-      let link = '/posts/'+post.slug;
+      let link = "/posts/" + post.slug;
       let newSend = {
         slug: postslugfix,
         title: post.title.rendered,
         content: content,
-        link: link 
+        link: link,
       };
       newSend = JSON.stringify(newSend);
       ary.push(newSend);
       postAuthors[post.author] = ary;
     }
     postSlugs["authors"] = postAuthors;
-    console.log("post slugs", postSlugs);
     commit("posts", postSlugs);
     // if (process.env.NODE_ENV == "development") {
     //   const posts = await this.$axios.$get("/wp-json/wp/v2/pages");
