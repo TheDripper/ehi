@@ -1,5 +1,6 @@
 <template>
   <div id="pages">
+    <button @click="filter">Filter</button>
     <ul>
       <li v-for="tag in facets">
         {{ tag.slug }}
@@ -23,8 +24,7 @@ export default {
       let request_data = {
         data: {
           facets: {
-            tags: ["audi"],
-            vehicle_type: [],
+            tags: ["american"],
           },
           query_args: {
             post_type: "posts",
@@ -33,8 +33,11 @@ export default {
           },
         },
       };
+      this.$axios.onRequest((config) => {
+        config.headers.common["Authorization"] = 'Basic ' + btoa('tylerhillwebdev:0MH4 CK5W 2Fm8 GUjP T4GG lHvw') ;
+      });
       let filtered = await this.$axios.$post(
-        "/wp-json/facetwp/v1/fetch",
+        "/api/facetwp/v1/fetch",
         request_data
       );
       console.log(filtered);
