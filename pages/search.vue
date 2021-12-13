@@ -1,9 +1,8 @@
 <template>
   <div id="pages">
-    <button @click="filter">Filter</button>
     <ul>
-      <li v-for="tag in facets">
-        {{ tag.slug }}
+      <li v-for="tag in facets" >
+        <input type="checkbox" :value="tag.slug" @click="update(tag.slug)"/>{{ tag.slug }}
       </li>
     </ul>
     <ul class="flex flex-wrap p-8 search">
@@ -20,6 +19,14 @@
 <script>
 export default {
   methods: {
+    async update(slug) {
+      if(this.selected[slug] && this.selected[slug] != false) {
+        this.selected[slug] = false;
+      } else {
+        this.selected[slug] = true;
+      }
+      console.log(this.selected);
+    },
     async filter() {
       let request_data = {
         data: {
@@ -43,7 +50,17 @@ export default {
       console.log(filtered);
     },
   },
+  data() {
+    return {
+      selected: {} 
+    }
+  },
   computed: {
+    filtered() {
+      let filtered = [];
+      return filtered;
+      // for (let post in this.$store.state.posts);
+    },
     facets() {
       return this.$store.state.facets;
     },

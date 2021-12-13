@@ -221,6 +221,7 @@ export const actions = {
       let postslugfix = post.slug.replace("-", "");
       if (IsJsonString(post.content.rendered)) {
         var obj = JSON.parse(jstr);
+        obj.id = post.id;
         postSlugs[postslugfix] = obj;
       } else {
         postSlugs[postslugfix] = jstr;
@@ -236,6 +237,7 @@ export const actions = {
         title: post.title.rendered,
         content: content,
         link: link,
+        id: post.id,
       };
       newSend = JSON.stringify(newSend);
       ary.push(newSend);
