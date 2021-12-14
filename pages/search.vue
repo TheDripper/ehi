@@ -4,7 +4,8 @@
       <li v-for="(tag, index) in facets" :key="index">
         <input
           type="checkbox"
-          v-model="selected[index]"
+          :value="tag.id"
+          @change="filter(tag.id)"
         />{{ tag.slug }}
       </li>
     </ul>
@@ -23,15 +24,24 @@
 import wpapi from "wpapi";
 export default {
   methods: {
-    async filter(slug) {
+    async filter(id) {
+      console.log('filter');
       let wp = new wpapi({
         endpoint: "https://eathereindy.nfshost.com/wp-json/",
         username: "tylerhillwebdev",
         password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
         auth: true,
       });
-      console.log("selected",this.selected);
-      let filtered = await wp.posts().tags(this.selected).get();
+      console.log(id);
+      let test = this.selected.indexOf(id);
+      console.log('test',test);
+      if(test > -1) {
+        this.selected.splice(test,1);
+      } else {
+        this.selected.push(id);
+      }
+      console.log('selected',this.selected);
+      let filtered = await wp.posts().tags(this.selected).perPage(100).get();
       console.log("filtered", filtered);
     },
   },
