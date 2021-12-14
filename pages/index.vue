@@ -4,6 +4,27 @@
     <div>
       <ul class="flex flex-wrap h-screen v-screen">
         <input v-model="search" type="text" @change="searchSend" />
+        <ul
+          v-if="filtered && filtered.length"
+          class="flex flex-wrap p-8 filtered w-4/5"
+        >
+          <li v-for="post in filtered" class="w-1/3 m-4 p-4">
+            <NuxtLink :to="post.link"
+              ><img class="thumb" :src="post.media"
+            /></NuxtLink>
+            <h3 class="text-xl">{{ post.title }}</h3>
+            <p class="text-md font-bold">{{ post.blurb }}</p>
+          </li>
+        </ul>
+        <ul v-else class="flex flex-wrap p-8 search w-4/5">
+          <li v-for="page in search" class="w-1/3 m-4 p-4">
+            <NuxtLink :to="page.link"
+              ><img class="thumb" :src="page.media"
+            /></NuxtLink>
+            <h3 class="text-xl">{{ page.title }}</h3>
+            <p class="text-md font-bold">{{ page.blurb }}</p>
+          </li>
+        </ul>
       </ul>
     </div>
   </div>
@@ -16,10 +37,44 @@ import $ from "jquery";
 export default {
   data() {
     return {
+      filtered: [],
       search: "",
     };
   },
   methods: {
+    async filter(id) {
+      console.log("filter");
+      let wp = new wpapi({
+        endpoint: "https://eathereindy.nfshost.com/wp-json/",
+        username: "tylerhillwebdev",
+        password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
+        auth: true,
+      });
+      console.log(id);
+      let test = this.selected.indexOf(id);
+      console.log("test", test);
+      if (test > -1) {
+        this.selected.splice(test, 1);
+      } else {
+        this.selected.push(id);
+      }
+      console.log("selected", this.selected);
+      let filteredPosts = await wp
+        .posts()
+        .tags(this.selected)
+        .categories(183)
+        .perPage(100)
+        .get();
+      let filtered = [];
+      for (let post of filteredPosts) {
+        var jstr = $("<div/>").html(post.content.rendered).text();
+        var obj = JSON.parse(jstr);
+        obj.link = post.link;
+        filtered.push(obj);
+      }
+      console.log("filtered", filtered, filtered.length);
+      this.filtered = filtered;
+    },
     async searchSend() {
       let wp = new wpapi({
         endpoint: "https://eathereindy.nfshost.com/wp-json/",
@@ -27,8 +82,16 @@ export default {
         password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
         auth: true,
       });
+      let filtered = [];
       let searchRes = await wp.posts().categories(183).search(this.search);
+      for (let searched of searchRes) {
+        var jstr = $("<div/>").html(searched.content.rendered).text();
+        var obj = JSON.parse(jstr);
+        obj.link = searched.link;
+        filtered.push(obj);
+      }
       console.log(searchRes);
+      this.filtered = filtered;
     },
   },
   created() {},

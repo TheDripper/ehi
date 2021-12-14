@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/spots/gordons-milkshakes", {data:[{}],fetch:{},mutations:[]});
