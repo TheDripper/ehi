@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="flex h-screen v-screen">
-      <ul class="flex flex-col w-1/4">
+      <ul class="flex flex-col w-1/6">
         <p v-if="loggedin" class="text-md">You are logged in as: {{ loggedin }}</p>
         <NuxtLink :to="{ path: '/restaurant-dashboard' }">Dashboard</NuxtLink>
         <NuxtLink :to="{ path: '/restaurant-submit' }">Submit</NuxtLink>
         <NuxtLink :to="{ path: '/restaurant-login' }">Login</NuxtLink>
         <NuxtLink :to="{ path: '/restaurant-register' }">Register</NuxtLink>
       </ul>
-      <div class="overflow-scroll w-3/4 bg-back-grey p-8">
+      <div class="overflow-scroll w-5/6 bg-back-grey p-8">
         <Nuxt />
       </div>
     </div>

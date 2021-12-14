@@ -1,13 +1,13 @@
 <template>
-  <div id="pages">
-    <ul class="flex flex-wrap">
-      <li class="w-1/3" v-for="(tag, index) in facets" :key="index">
-        <input type="checkbox" :value="tag.id" @change="filter(tag.id)" />{{
-          tag.slug
-        }}
+  <div id="pages" class="flex">
+    <ul class="flex flex-col w-1/5" id="facets">
+      <li class="list-none"
+       v-for="(tag, index) in facets" :key="index">
+        <p class="flex items-center justify-start">
+        <input class="w-auto mr-4" type="checkbox" :value="tag.id" @change="filter(tag.id)" />{{ tag.slug }}</p>
       </li>
     </ul>
-    <ul v-if="filtered && filtered.length">
+    <ul v-if="filtered && filtered.length" class="flex flex-wrap p-8 filtered w-4/5">
       <li v-for="post in filtered" class="w-1/3 m-4 p-4">
         <NuxtLink :to="post.link"
           ><img class="thumb" :src="post.media"
@@ -16,7 +16,7 @@
         <p class="text-md font-bold">{{ post.blurb }}</p>
       </li>
     </ul>
-    <ul v-else class="flex flex-wrap p-8 search">
+    <ul v-else class="flex flex-wrap p-8 search w-4/5">
       <li v-for="page in search" class="w-1/3 m-4 p-4">
         <NuxtLink :to="page.link"
           ><img class="thumb" :src="page.media"
