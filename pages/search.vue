@@ -1,8 +1,11 @@
 <template>
   <div id="pages">
     <ul>
-      <li v-for="tag in facets" >
-        <input type="checkbox" :value="tag.slug" @click="update(tag.slug)"/>{{ tag.slug }}
+      <li v-for="(tag, index) in facets" :key="index">
+        <input
+          type="checkbox"
+          v-model="selected[index]"
+        />{{ tag.slug }}
       </li>
     </ul>
     <ul class="flex flex-wrap p-8 search">
@@ -17,43 +20,25 @@
   </div>
 </template>
 <script>
+import wpapi from "wpapi";
 export default {
   methods: {
-    async update(slug) {
-      if(this.selected[slug] && this.selected[slug] != false) {
-        this.selected[slug] = false;
-      } else {
-        this.selected[slug] = true;
-      }
-      console.log(this.selected);
-    },
-    async filter() {
-      let request_data = {
-        data: {
-          facets: {
-            tags: ["american"],
-          },
-          query_args: {
-            post_type: "posts",
-            posts_per_page: 10,
-            paged: 1,
-          },
-        },
-      };
-      this.$axios.onRequest((config) => {
-        config.headers.common["Authorization"] = 'Basic ' + btoa('tylerhillwebdev:0MH4 CK5W 2Fm8 GUjP T4GG lHvw') ;
+    async filter(slug) {
+      let wp = new wpapi({
+        endpoint: "https://eathereindy.nfshost.com/wp-json/",
+        username: "tylerhillwebdev",
+        password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
+        auth: true,
       });
-      let filtered = await this.$axios.$post(
-        "/api/facetwp/v1/fetch",
-        request_data
-      );
-      console.log(filtered);
+      console.log("selected",this.selected);
+      let filtered = await wp.posts().tags(this.selected).get();
+      console.log("filtered", filtered);
     },
   },
   data() {
     return {
-      selected: {} 
-    }
+      selected: [],
+    };
   },
   computed: {
     filtered() {
