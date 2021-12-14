@@ -3,34 +3,7 @@
     <div :class="classes"></div>
     <div>
       <ul class="flex flex-wrap h-screen v-screen">
-        <NuxtLink
-          :to="{ path: '/restaurant-login' }"
-          class="
-            bg-burnt
-            w-1/2
-            h-full
-            flex
-            items-center
-            justify-center
-            text-xl text-white
-            uppercase
-          "
-          >Login</NuxtLink
-        >
-        <NuxtLink
-          :to="{ path: '/restaurant-register' }"
-          class="
-            bg-white
-            w-1/2
-            h-full
-            flex
-            items-center
-            justify-center
-            text-xl text-burnt
-            uppercase
-          "
-          >Create Account</NuxtLink
-        >
+        <input v-model="search" type="text" @change="searchSend" />
       </ul>
     </div>
   </div>
@@ -38,19 +11,26 @@
 
 <script>
 import { mapActions } from "vuex";
+import wpapi from "wpapi";
 import $ from "jquery";
 export default {
-  // async asyncData({ $axios }) {
-  //   const header = await $axios.$get("/api/pages/7");
-  //   console.log(header);
-  //   const footer = await $axios.$get("/api/pages/9");
-  //   const home = await $axios.$get("/api/pages/5");
-  //   return {
-  //     header,
-  //     footer,
-  //     home
-  //   }
-  // },
+  data() {
+    return {
+      search: "",
+    };
+  },
+  methods: {
+    async searchSend() {
+      let wp = new wpapi({
+        endpoint: "https://eathereindy.nfshost.com/wp-json/",
+        username: "tylerhillwebdev",
+        password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
+        auth: true,
+      });
+      let searchRes = await wp.posts().categories(183).search(this.search);
+      console.log(searchRes);
+    },
+  },
   created() {},
   mounted() {
     // $("a").each(function () {
