@@ -3,6 +3,7 @@
     <div class="flex h-screen v-screen">
       <ul class="flex flex-col w-1/6 p-8 justify-center items-center font-bold" id="nav">
         <p v-if="loggedin" class="text-md">You are logged in as: {{ loggedin }}</p>
+        <NuxtLink :to="{ path: '/' }">Home</NuxtLink>
         <NuxtLink :to="{ path: '/restaurant-dashboard' }">Profile</NuxtLink>
         <NuxtLink :to="{ path: '/restaurant-submit' }">Submit Content</NuxtLink>
         <NuxtLink :to="{ path: '/restaurant-login' }">Login</NuxtLink>

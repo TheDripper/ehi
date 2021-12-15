@@ -3,26 +3,26 @@
     <div :class="classes"></div>
     <div>
       <ul class="flex flex-wrap h-screen v-screen">
-        <input v-model="search" type="text" @change="searchSend" />
+        <input class="searchbox h-12 rounded-full border-none" v-model="search" type="text" @change="searchSend" />
         <ul
           v-if="filtered && filtered.length"
           class="flex flex-wrap p-8 filtered w-4/5"
         >
-          <li v-for="post in filtered" class="w-1/3 m-4 p-4">
+          <li v-for="post in filtered" class="w-1/3 m-4 p-4 list-none">
             <NuxtLink :to="post.link"
-              ><img class="thumb" :src="post.media"
+              ><img class="thumb mb-4" :src="post.media"
             /></NuxtLink>
             <h3 class="text-xl">{{ post.title }}</h3>
-            <p class="text-md font-bold">{{ post.blurb }}</p>
+            <p class="text-md">{{ post.blurb }}</p>
           </li>
         </ul>
         <ul v-else class="flex flex-wrap p-8 search w-4/5">
-          <li v-for="page in search" class="w-1/3 m-4 p-4">
+          <li v-for="page in search" class="w-1/3 m-4 p-4 list-none">
             <NuxtLink :to="page.link"
-              ><img class="thumb" :src="page.media"
+              ><img class="thumb mb-4" :src="page.media"
             /></NuxtLink>
             <h3 class="text-xl">{{ page.title }}</h3>
-            <p class="text-md font-bold">{{ page.blurb }}</p>
+            <p class="text-md">{{ page.blurb }}</p>
           </li>
         </ul>
       </ul>
@@ -69,7 +69,7 @@ export default {
       for (let post of filteredPosts) {
         var jstr = $("<div/>").html(post.content.rendered).text();
         var obj = JSON.parse(jstr);
-        obj.link = post.link;
+        obj.link = "/spots/"+post.slug
         filtered.push(obj);
       }
       console.log("filtered", filtered, filtered.length);
@@ -87,7 +87,7 @@ export default {
       for (let searched of searchRes) {
         var jstr = $("<div/>").html(searched.content.rendered).text();
         var obj = JSON.parse(jstr);
-        obj.link = searched.link;
+        obj.link = "/spots/" + searched.slug;
         filtered.push(obj);
       }
       console.log(searchRes);
@@ -129,6 +129,10 @@ export default {
 };
 </script>
 <style lang="scss">
+.searchbox {
+  box-shadow: 2px 2px 4px 4px #eeeeee, -1px -1px 2px 2px #eeeeee;
+  @apply p-4;
+}
 #content {
   overflow-x: hidden;
   width: 100vw;
