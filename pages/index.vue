@@ -70,6 +70,7 @@ export default {
         var jstr = $("<div/>").html(post.content.rendered).text();
         var obj = JSON.parse(jstr);
         obj.link = "/spots/"+post.slug
+        obj.title = post.title.rendered;
         filtered.push(obj);
       }
       console.log("filtered", filtered, filtered.length);
@@ -88,6 +89,7 @@ export default {
         var jstr = $("<div/>").html(searched.content.rendered).text();
         var obj = JSON.parse(jstr);
         obj.link = "/spots/" + searched.slug;
+        obj.title = searched.title.rendered;
         filtered.push(obj);
       }
       console.log(searchRes);

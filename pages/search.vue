@@ -8,7 +8,7 @@
       </li>
     </ul>
     <ul v-if="filtered && filtered.length" class="flex flex-wrap p-8 filtered w-4/5">
-      <li v-for="post in filtered" class="w-1/3 m-4 p-4">
+      <li v-for="post in filtered" class="w-1/3 m-4 p-4 list-none">
         <NuxtLink :to="post.link"
           ><img class="thumb" :src="post.media"
         /></NuxtLink>
@@ -17,7 +17,7 @@
       </li>
     </ul>
     <ul v-else class="flex flex-wrap p-8 search w-4/5">
-      <li v-for="page in search" class="w-1/3 m-4 p-4">
+      <li v-for="page in search" class="w-1/3 m-4 p-4 list-none">
         <NuxtLink :to="page.link"
           ><img class="thumb" :src="page.media"
         /></NuxtLink>
@@ -60,6 +60,7 @@ export default {
         var jstr = $("<div/>").html(post.content.rendered).text();
         var obj = JSON.parse(jstr);
         obj.link = post.link;
+        obj.title = post.title.rendered;
         filtered.push(obj);
       }
       console.log('filtered',filtered,filtered.length);
