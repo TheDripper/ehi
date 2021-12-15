@@ -17,7 +17,7 @@
           </li>
         </ul>
         <ul v-else class="flex flex-wrap p-8 search w-4/5">
-          <li v-for="page in search" class="w-1/3 m-4 p-4 list-none">
+          <li v-for="page in searchAry" class="w-1/3 m-4 p-4 list-none">
             <NuxtLink :to="page.link"
               ><img class="thumb mb-4" :src="page.media"
             /></NuxtLink>
@@ -113,6 +113,9 @@ export default {
     });
   },
   computed: {
+    searchAry() {
+      return this.$store.state.search;
+    },
     page() {
       return this.$store.state.home;
     },
