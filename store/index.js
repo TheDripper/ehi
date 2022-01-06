@@ -14,6 +14,7 @@ export const state = () => ({
   users: [],
   loggedin: 0,
   home: null,
+  news: null,
   subscribe: null,
   whatWeveDone: null,
   whoWeAre: null,
@@ -65,6 +66,9 @@ export const mutations = {
   },
   home(state, home) {
     state.home = home;
+  },
+  news(state, news) {
+    state.news = news;
   },
   restLog(state, restLog) {
     state.restLog = restLog;
@@ -129,9 +133,11 @@ export const actions = {
       auth: true,
     });
     let facets = await wp.tags().perPage(100).get();
-    commit('facets',facets);
-    console.log('facets',facets);
+    commit("facets", facets);
+    console.log("facets", facets);
     const pages = await wp.posts().categories(183).perPage(100).get();
+    const news = await wp.posts().categories(207).perPage(100).get();
+    let newsSearch = [];
     let slugs = {};
     let urls = [];
     let search = [];
@@ -161,7 +167,7 @@ export const actions = {
           link: slugLink,
           title: page.title.rendered,
           media: feat.guid.rendered,
-          blurb: blurb
+          blurb: blurb,
         });
       } else {
         let slugLink = "/" + page.slug;
@@ -214,6 +220,25 @@ export const actions = {
       let slugLink = "/posts/" + post.slug;
       urls.push({ link: slugLink, title: post.title.rendered });
     }
+    for (let post of news) {
+      var jstr = $("<div/>").html(post.content.rendered).text();
+      let slugfix = post.slug.replace("-", "");
+      if (IsJsonString(post.content.rendered)) {
+        var obj = JSON.parse(jstr);
+        let slugLink = "/posts/" + post.slug;
+        obj.link = slugLink;
+        newsSearch.push(obj);
+        slugs[slugfix] = obj;
+        if (post.author !== 1) {
+          authors[post.author] = slugfix;
+        }
+      } else {
+        slugs[slugfix] = jstr;
+      }
+      let slugLink = "/posts/" + post.slug;
+      urls.push({ link: slugLink, title: post.title.rendered });
+    }
+    commit("news", newsSearch);
     let postSlugs = {};
     let postAuthors = {};
     for (let post of posts) {
