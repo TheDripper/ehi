@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/spots/jim-is-drunk", {data:[{}],fetch:{},mutations:[]});

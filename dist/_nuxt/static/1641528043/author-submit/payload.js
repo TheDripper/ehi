@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/author-submit", {data:[{}],fetch:{},mutations:[]});

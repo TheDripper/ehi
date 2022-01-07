@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/spots/1533-2", {data:[{}],fetch:{},mutations:[]});
