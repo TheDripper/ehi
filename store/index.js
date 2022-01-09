@@ -134,7 +134,6 @@ export const actions = {
     });
     let facets = await wp.tags().perPage(100).get();
     commit("facets", facets);
-    console.log("facets", facets);
     const pages = await wp.posts().categories(183).perPage(100).get();
     const news = await wp.posts().categories(207).perPage(100).get();
     let newsSearch = [];
@@ -143,6 +142,7 @@ export const actions = {
     let search = [];
     let authors = {};
     for (let page of pages) {
+      console.log(page);
       var jstr = $("<div/>").html(page.content.rendered).text();
       let slugfix = page.slug.replace("-", "");
       if (IsJsonString(page.content.rendered)) {
@@ -154,7 +154,7 @@ export const actions = {
       } else {
         slugs[slugfix] = jstr;
       }
-      if (page.author !== 1) {
+      if (page.author !== 1 && page.categories.includes(209)) {
         let slugLink = "/spots/" + page.slug;
         urls.push({ link: slugLink, title: page.title.rendered });
         let cat = page.tags;
