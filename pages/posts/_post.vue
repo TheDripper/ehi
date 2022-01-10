@@ -3,9 +3,12 @@
     <div :class="classes"></div>
     <div class="flex h-screen v-screen">
       <div id="page" class="overflow-scroll w-3/4 bg-back-grey p-8">
-      <h1>{{ page.title }}</h1>
-      <p>{{ page.body }}</p>
-      <img :src="page.media" class="feat" />
+        <img :src="page.media" class="feat" />
+        <h1>{{ page.title }}</h1>
+        <p>{{ page.body }}</p>
+        <p>Comment</p>
+        <textarea id="comment"></textarea>
+        <button @click="sendComment">Post Comment</button>
       </div>
     </div>
   </div>
@@ -67,12 +70,37 @@ export default {
       // });
     });
   },
+  data() {
+    return {
+      comment: "",
+    };
+  },
+  methods: {
+    sendComment() {
+      let wp = new wpapi({
+        endpoint: "https://eathereindy.nfshost.com/wp-json/",
+        username: "tylerhillwebdev",
+        password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
+        auth: true,
+      });
+      wp.comments.create({
+        post: this.page.id,
+      })
+    },
+  },
   computed: {
+    user() {
+      if(this.$store.state.loggedin) {
+        let loggedin = this.$store.state.loggedin;
+        return this.$store.state.users[loggedin];
+      } 
+      return 0;
+    },
     ajax() {
       return this.$store.state.ajax;
     },
     page() {
-      let slug = this.$route.params.post.replace('-','');
+      let slug = this.$route.params.post.replace("-", "");
       console.log(slug);
       return this.$store.state.posts[slug];
     },

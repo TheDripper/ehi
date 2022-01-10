@@ -73,13 +73,14 @@ export default {
   },
   methods: {
     senduser() {
-      let logged = "";
-      for (let user of this.users) {
-        console.log(user.username);
-        if (user.username == this.username) {
-          logged = user.id;
+      let logged = '';
+      for (let i in this.users) {
+        console.log(this.users[i]);
+        if (this.users[i].name == this.username) {
+          logged = i;
         }
       }
+      console.log('logged',logged);
       this.setUser(logged);
       this.$router.push('/restaurant-dashboard');
       return;

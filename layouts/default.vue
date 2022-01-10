@@ -9,6 +9,7 @@
         <NuxtLink :to="{ path: '/restaurant-login' }">Login</NuxtLink>
         <NuxtLink :to="{ path: '/restaurant-register' }">Register</NuxtLink>
         <NuxtLink :to="{ path: '/search' }">Search</NuxtLink>
+        <NuxtLink :to="{ path: '/archive' }">Archive</NuxtLink>
       </ul>
       <div class="overflow-scroll w-5/6 bg-back-grey p-8">
         <Nuxt />
@@ -70,10 +71,10 @@ html {
 export default {
   computed: {
     loggedin() {
-      return this.$store.state.loggedin;
-    },
-    username(){
-
+      if(this.$store.state.loggedin) {
+        return this.$store.state.loggedin;
+      }
+      return false;
     }
   }
 }

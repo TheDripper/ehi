@@ -221,7 +221,8 @@ export default {
       return this.$store.state.ajax;
     },
     loggedin() {
-      return this.$store.state.loggedin;
+      let logged = this.$store.state.loggedin.id;
+      return this.$store.state.users[logged];
     },
     posts() {
       let logged = this.loggedin;

@@ -12,7 +12,7 @@ export const state = () => ({
   posts: null,
   pages: null,
   users: [],
-  loggedin: 0,
+  loggedin: false,
   home: null,
   news: null,
   subscribe: null,
@@ -106,6 +106,7 @@ export const actions = {
   },
   setUser({ commit, state }, loggedin) {
     commit("loggedin", loggedin);
+    console.log('loggedin',loggedin);
     // set myPosts
     // let wp = new wpapi({
     //   endpoint: "https://eathereindy.nfshost.com/wp-json",
@@ -142,7 +143,6 @@ export const actions = {
     let search = [];
     let authors = {};
     for (let page of pages) {
-      console.log(page);
       var jstr = $("<div/>").html(page.content.rendered).text();
       let slugfix = page.slug.replace("-", "");
       if (IsJsonString(page.content.rendered)) {
@@ -192,12 +192,17 @@ export const actions = {
     let footer = slugs.footer;
     commit("footer", footer);
     const users = await wp.users().perPage(100).get();
-    let ids = [];
+    let ids = {};
     for (let user of users) {
-      ids.push({
-        id: user.id,
-        username: user.name,
-      });
+      console.log(user);
+      ids[user.id] = {
+        name: user.name
+      }
+      // ids.push({
+      //   id: user.id,
+      //   username: user.name,
+      //   email: user.email
+      // });
     }
     commit("users", ids);
     // const restLog = await this.$axios.$get(
