@@ -16,6 +16,7 @@ export const state = () => ({
   loggedin: false,
   home: null,
   news: null,
+  featNews: [],
   subscribe: null,
   whatWeveDone: null,
   whoWeAre: null,
@@ -73,6 +74,9 @@ export const mutations = {
   },
   news(state, news) {
     state.news = news;
+  },
+  featNews(state, featNews) {
+    state.featNews = featNews;
   },
   restLog(state, restLog) {
     state.restLog = restLog;
@@ -231,6 +235,7 @@ export const actions = {
       let slugLink = "/posts/" + post.slug;
       urls.push({ link: slugLink, title: post.title.rendered });
     }
+    let featNews = [];
     for (let post of news) {
       var jstr = $("<div/>").html(post.content.rendered).text();
       let slugfix = post.slug.replace("-", "");
@@ -240,6 +245,9 @@ export const actions = {
         let slugLink = "/posts/" + post.slug;
         obj.link = slugLink;
         newsSearch.push(obj);
+        if(post.categories.includes(227)) {
+          featNews.push(obj);
+        }
         slugs[slugfix] = obj;
         if (post.author !== 1) {
           authors[post.author] = slugfix;
@@ -250,6 +258,7 @@ export const actions = {
       let slugLink = "/posts/" + post.slug;
       urls.push({ link: slugLink, title: post.title.rendered });
     }
+    commit("featNews",featNews);
     commit("news", newsSearch);
     let postSlugs = {};
     let postAuthors = {};
