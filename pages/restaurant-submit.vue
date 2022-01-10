@@ -169,6 +169,7 @@ export default {
         title: this.title,
         content: postSend,
         author: this.loggedin,
+        categories: [207],
         status: "publish",
       });
       console.log(posts, posts.id);

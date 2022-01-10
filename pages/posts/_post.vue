@@ -6,15 +6,17 @@
         <img :src="page.media" class="feat" />
         <h1>{{ page.title }}</h1>
         <p>{{ page.body }}</p>
-        <h3>Comments</h3>
         <ul v-if="comments && comments.length">
+          <h3>Comments</h3>
           <li v-for="comment in comments">
             {{ comment.content.rendered }}
           </li>
         </ul>
-        <p>Comment</p>
-        <textarea id="comment" v-model="comment"></textarea>
-        <button @click="sendComment">Post Comment</button>
+        <div v-if="user">
+          <p>Comment</p>
+          <textarea id="comment" v-model="comment"></textarea>
+          <button @click="sendComment">Post Comment</button>
+        </div>
       </div>
     </div>
   </div>
@@ -115,7 +117,7 @@ export default {
         let loggedin = this.$store.state.loggedin;
         return this.$store.state.users[loggedin];
       }
-      return 0;
+      return false;
     },
     ajax() {
       return this.$store.state.ajax;
