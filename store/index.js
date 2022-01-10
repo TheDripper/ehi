@@ -3,6 +3,7 @@ import wpapi from "wpapi";
 import { decode } from "html-entities";
 import $ from "cheerio";
 export const state = () => ({
+  comments: [],
   facets: [],
   search: [],
   header: null,
@@ -45,6 +46,9 @@ export const mutations = {
   },
   facets(state, facets) {
     state.facets = facets;
+  },
+  comments(state, comments) {
+    state.comments = comments;
   },
   pages(state, pages) {
     state.pages = pages;
@@ -137,6 +141,8 @@ export const actions = {
     commit("facets", facets);
     const pages = await wp.posts().categories(183).perPage(100).get();
     const news = await wp.posts().categories(207).perPage(100).get();
+    const comments = await wp.comments().perPage(100).get();
+    commit("comments",comments);
     let newsSearch = [];
     let slugs = {};
     let urls = [];
@@ -228,6 +234,7 @@ export const actions = {
     for (let post of news) {
       var jstr = $("<div/>").html(post.content.rendered).text();
       let slugfix = post.slug.replace("-", "");
+      console.log('newspost',post);
       if (IsJsonString(post.content.rendered)) {
         var obj = JSON.parse(jstr);
         let slugLink = "/posts/" + post.slug;

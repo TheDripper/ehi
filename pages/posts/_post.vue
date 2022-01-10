@@ -6,6 +6,12 @@
         <img :src="page.media" class="feat" />
         <h1>{{ page.title }}</h1>
         <p>{{ page.body }}</p>
+        <h3>Comments</h3>
+        <ul v-if="comments && comments.length">
+          <li v-for="comment in comments">
+            {{ comment.content.rendered }}
+          </li>
+        </ul>
         <p>Comment</p>
         <textarea id="comment" v-model="comment"></textarea>
         <button @click="sendComment">Post Comment</button>
@@ -89,17 +95,26 @@ export default {
         post: this.page.id,
         author_email: this.user.name,
         author_name: this.user.name,
-        content: this.comment
+        content: this.comment,
       });
-      console.log('comment',newComment);
+      console.log("comment", newComment);
     },
   },
   computed: {
+    comments() {
+      let comments = [];
+      for (let comment of this.$store.state.comments) {
+        if (comment.post == this.page.id) {
+          comments.push(comment);
+        }
+      }
+      return comments;
+    },
     user() {
-      if(this.$store.state.loggedin) {
+      if (this.$store.state.loggedin) {
         let loggedin = this.$store.state.loggedin;
         return this.$store.state.users[loggedin];
-      } 
+      }
       return 0;
     },
     ajax() {
