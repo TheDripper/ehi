@@ -7,7 +7,7 @@
         <h1>{{ page.title }}</h1>
         <p>{{ page.body }}</p>
         <p>Comment</p>
-        <textarea id="comment"></textarea>
+        <textarea id="comment" v-model="comment"></textarea>
         <button @click="sendComment">Post Comment</button>
       </div>
     </div>
@@ -20,6 +20,8 @@ import $ from "jquery";
 import jQuery from "jquery";
 // import $axios from "@nuxtjs/axios";
 import axios from "axios";
+import wpapi from "wpapi";
+
 export default {
   // async asyncData({ $axios }) {
   //   const header = await $axios.$get("/api/pages/7");
@@ -76,16 +78,20 @@ export default {
     };
   },
   methods: {
-    sendComment() {
+    async sendComment() {
       let wp = new wpapi({
         endpoint: "https://eathereindy.nfshost.com/wp-json/",
         username: "tylerhillwebdev",
         password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
         auth: true,
       });
-      wp.comments.create({
+      let newComment = await wp.comments().create({
         post: this.page.id,
-      })
+        author_email: this.user.name,
+        author_name: this.user.name,
+        content: this.comment
+      });
+      console.log('comment',newComment);
     },
   },
   computed: {
