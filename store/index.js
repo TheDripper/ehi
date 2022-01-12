@@ -17,6 +17,7 @@ export const state = () => ({
   home: null,
   news: null,
   featNews: [],
+  featRest: [],
   subscribe: null,
   whatWeveDone: null,
   whoWeAre: null,
@@ -78,6 +79,9 @@ export const mutations = {
   featNews(state, featNews) {
     state.featNews = featNews;
   },
+  featRest(state, featRest) {
+    state.featRest = featRest;
+  },
   restLog(state, restLog) {
     state.restLog = restLog;
   },
@@ -114,7 +118,7 @@ export const actions = {
   },
   setUser({ commit, state }, loggedin) {
     commit("loggedin", loggedin);
-    console.log('loggedin',loggedin);
+    console.log("loggedin", loggedin);
     // set myPosts
     // let wp = new wpapi({
     //   endpoint: "https://eathereindy.nfshost.com/wp-json",
@@ -146,12 +150,13 @@ export const actions = {
     const pages = await wp.posts().categories(183).perPage(100).get();
     const news = await wp.posts().categories(207).perPage(100).get();
     const comments = await wp.comments().perPage(100).get();
-    commit("comments",comments);
+    commit("comments", comments);
     let newsSearch = [];
     let slugs = {};
     let urls = [];
     let search = [];
     let authors = {};
+    let featRest = [];
     for (let page of pages) {
       var jstr = $("<div/>").html(page.content.rendered).text();
       let slugfix = page.slug.replace("-", "");
@@ -179,6 +184,14 @@ export const actions = {
           media: feat.guid.rendered,
           blurb: blurb,
         });
+        if (page.categories.includes(227)) {
+          featRest.push({
+            link: slugLink,
+            title: page.title.rendered,
+            media: feat.guid.rendered,
+            blurb: blurb,
+          });
+        }
       } else {
         let slugLink = "/" + page.slug;
         urls.push({ link: slugLink, title: page.title.rendered });
@@ -187,6 +200,7 @@ export const actions = {
 
     slugs["urls"] = urls;
     slugs["authors"] = authors;
+    commit("featRest",featRest);
     commit("pages", slugs);
     commit("search", search);
 
@@ -206,8 +220,8 @@ export const actions = {
     for (let user of users) {
       console.log(user);
       ids[user.id] = {
-        name: user.name
-      }
+        name: user.name,
+      };
       // ids.push({
       //   id: user.id,
       //   username: user.name,
@@ -239,13 +253,13 @@ export const actions = {
     for (let post of news) {
       var jstr = $("<div/>").html(post.content.rendered).text();
       let slugfix = post.slug.replace("-", "");
-      console.log('newspost',post);
+      console.log("newspost", post);
       if (IsJsonString(post.content.rendered)) {
         var obj = JSON.parse(jstr);
         let slugLink = "/posts/" + post.slug;
         obj.link = slugLink;
         newsSearch.push(obj);
-        if(post.categories.includes(227)) {
+        if (post.categories.includes(227)) {
           featNews.push(obj);
         }
         slugs[slugfix] = obj;
@@ -258,7 +272,7 @@ export const actions = {
       let slugLink = "/posts/" + post.slug;
       urls.push({ link: slugLink, title: post.title.rendered });
     }
-    commit("featNews",featNews);
+    commit("featNews", featNews);
     commit("news", newsSearch);
     let postSlugs = {};
     let postAuthors = {};

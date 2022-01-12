@@ -1,30 +1,61 @@
 <template>
   <div id="root" class="testtttt">
     <div :class="classes"></div>
+    <input
+      class="searchbox h-12 rounded-full border-none mb-12"
+      v-model="search"
+      type="text"
+      @change="searchSend"
+    />
     <div>
-      <ul class="flex flex-wrap h-screen v-screen">
-        <input class="searchbox h-12 rounded-full border-none" v-model="search" type="text" @change="searchSend" />
-        <ul
-          v-if="filtered && filtered.length"
-          class="flex flex-wrap p-8 filtered w-4/5"
+      <div
+        id="featNews"
+        v-if="featNews && featNews.length"
+        class="flex w-2/3 bg-white rounded-xl overflow-hidden"
+      >
+        <ul class="p-0 slider w-full">
+          <li
+            v-for="news in featNews"
+            class="list-none flex items-center justify-start"
+          >
+            <div id="slide-frame">
+              <img :src="news.media" class="rounded-xl" />
+            </div>
+            <div class="flex flex-col items-start justify-bewtween">
+              <h6>Trending News</h6>
+              <NuxtLink :to="{ path: '/archive' }">View More News</NuxtLink>
+              <h3>{{ news.title }}</h3>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <h1>Restaurants</h1>
+      <ul
+        v-if="filtered && filtered.length"
+        class="flex flex-wrap p-8 filtered w-4/5"
+      >
+        <li
+          v-for="post in filtered"
+          class="w-full lg:w-1/2 lg:w-1/3 m-4 p-4 list-none"
         >
-          <li v-for="post in filtered" class="w-full lg:w-1/2 lg:w-1/3 m-4 p-4 list-none">
-            <NuxtLink :to="post.link"
-              ><img class="thumb mb-4" :src="post.media"
-            /></NuxtLink>
-            <h3 class="text-xl">{{ post.title }}</h3>
-            <p class="text-md">{{ post.blurb }}</p>
-          </li>
-        </ul>
-        <ul v-else class="w-full flex flex-wrap p-8 search w-4/5">
-          <li v-for="page in searchAry" class="w-full md:w-1/3 lg:w-1/3 m-4 list-none">
-            <NuxtLink :to="page.link"
-              ><img class="thumb mb-4" :src="page.media"
-            /></NuxtLink>
-            <h3 class="text-xl">{{ page.title }}</h3>
-            <p class="text-md">{{ page.blurb }}</p>
-          </li>
-        </ul>
+          <NuxtLink :to="post.link"
+            ><img class="thumb mb-4" :src="post.media"
+          /></NuxtLink>
+          <h3 class="text-xl">{{ post.title }}</h3>
+          <p class="text-md">{{ post.blurb }}</p>
+        </li>
+      </ul>
+      <ul v-else class="w-full flex flex-wrap p-8 search w-4/5">
+        <li
+          v-for="page in searchAry"
+          class="w-full md:w-1/3 lg:w-1/3 m-4 list-none"
+        >
+          <NuxtLink :to="page.link"
+            ><img class="thumb mb-4" :src="page.media"
+          /></NuxtLink>
+          <h3 class="text-xl">{{ page.title }}</h3>
+          <p class="text-md">{{ page.blurb }}</p>
+        </li>
       </ul>
     </div>
   </div>
@@ -69,7 +100,7 @@ export default {
       for (let post of filteredPosts) {
         var jstr = $("<div/>").html(post.content.rendered).text();
         var obj = JSON.parse(jstr);
-        obj.link = "/spots/"+post.slug
+        obj.link = "/spots/" + post.slug;
         obj.title = post.title.rendered;
         filtered.push(obj);
       }
@@ -111,10 +142,13 @@ export default {
     });
     let instance = this;
     $(".slider").each(function () {
-      instance.$slider($(this).find(".wp-block-group__inner-container"));
+      instance.$slider($(this));
     });
   },
   computed: {
+    featNews() {
+      return this.$store.state.featNews;
+    },
     searchAry() {
       return this.$store.state.search;
     },
@@ -134,6 +168,17 @@ export default {
 };
 </script>
 <style lang="scss">
+#featNews {
+  height: 300px;
+  #slide-frame {
+    @apply flex items-center justify-center w-1/2 overflow-hidden;
+    height: 300px;
+    img {
+      height: 300px !important;
+      width: auto !important; 
+    }
+  }
+}
 .search {
   img {
     height: 150px;
