@@ -16,7 +16,7 @@
         <ul class="p-0 slider w-full">
           <li
             v-for="news in featNews"
-            class="list-none flex items-center justify-start"
+            class="list-none flex items-center justify-start flex-shrink-0"
           >
             <div id="slide-frame">
               <img :src="news.media" class="rounded-xl" />
@@ -45,14 +45,16 @@
           <p class="text-md">{{ post.blurb }}</p>
         </li>
       </ul>
-      <ul v-else class="w-full flex flex-wrap p-8 search w-4/5">
-        <li
-          v-for="page in searchAry"
-          class="w-full md:w-1/3 lg:w-1/3 m-4 list-none"
-        >
-          <NuxtLink :to="page.link"
-            ><img class="thumb mb-4" :src="page.media"
-          /></NuxtLink>
+      <ul
+        v-else
+        class="w-full flex p-8 search w-4/5 max-w-full"
+      >
+        <li v-for="page in searchAry" class="m-4 list-none result flex-shrink-0">
+          <div class="frame">
+            <NuxtLink :to="page.link"
+              ><img class="thumb mb-4" :src="page.media"
+            /></NuxtLink>
+          </div>
           <h3 class="text-xl">{{ page.title }}</h3>
           <p class="text-md">{{ page.blurb }}</p>
         </li>
@@ -168,21 +170,30 @@ export default {
 };
 </script>
 <style lang="scss">
-#featNews {
-  height: 300px;
-  #slide-frame {
-    @apply flex items-center justify-center w-1/2 overflow-hidden;
-    height: 300px;
+.search {
+  overflow-x: scroll;
+}
+.result {
+  width: 300px;
+  .frame {
+    width: 100%;
+    height: 150px;
+    @apply overflow-hidden flex items-center justify-center rounded-xl mb-4;
     img {
-      height: 300px !important;
-      width: auto !important; 
+      width: auto !important;
+      height: auto !important;
     }
   }
 }
-.search {
-  img {
-    height: 150px;
-    width: auto;
+#featNews {
+  height: 300px;
+  #slide-frame {
+    @apply flex items-center justify-center overflow-hidden;
+    height: 300px;
+    img {
+      height: 300px !important;
+      width: auto !important;
+    }
   }
 }
 .searchbox {
