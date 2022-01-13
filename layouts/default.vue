@@ -4,9 +4,9 @@
       <ul class="flex flex-col w-1/6 p-8 justify-center items-center font-bold" id="nav">
         <p v-if="loggedin" class="text-md">You are logged in as: {{ loggedin }}</p>
         <NuxtLink :to="{ path: '/' }">Home</NuxtLink>
-        <NuxtLink :to="{ path: '/restaurant-dashboard' }">Profile</NuxtLink>
-        <NuxtLink :to="{ path: '/restaurant-submit' }">Submit Content</NuxtLink>
-        <NuxtLink :to="{ path: '/restaurant-login' }">Login</NuxtLink>
+        <NuxtLink v-if="loggedin" :to="{ path: '/restaurant-dashboard' }">Profile</NuxtLink>
+        <NuxtLink v-if="loggedin" :to="{ path: '/restaurant-submit' }">Submit Content</NuxtLink>
+        <NuxtLink :to="{ path: '/login' }">Login</NuxtLink>
         <NuxtLink :to="{ path: '/restaurant-register' }">Register</NuxtLink>
         <NuxtLink :to="{ path: '/search' }">Search</NuxtLink>
         <NuxtLink :to="{ path: '/archive' }">Archive</NuxtLink>
@@ -19,6 +19,19 @@
 </template>
 
 <style>
+input,
+select,
+button {
+  @apply border border-burnt rounded-xl w-full mb-8;
+  height: 40px;
+}
+input[type="text"],
+input[type="password"] {
+  @apply pl-2;
+}
+button {
+  @apply bg-burnt text-white;
+}
 html {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;

@@ -65,10 +65,12 @@ module.exports = {
       },
       backgroundColor: (theme) => ({
         ...theme("colors"),
+        "burnt": "#ef4300",
         grey: "#2B3034",
         "quote-grey": "#f2f2f2",
         pink: "#ef4300",
         "back-grey": "#F4F4F5",
+        "button-grey":"#adadad"
       }),
       borderColor: (theme) => ({
         ...theme("colors"),

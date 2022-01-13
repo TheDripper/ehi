@@ -11,7 +11,7 @@
       <div
         id="featNews"
         v-if="featNews && featNews.length"
-        class="flex w-2/3 bg-white rounded-xl overflow-hidden"
+        class="flex w-2/3 bg-white rounded-xl overflow-hidden mb-24"
       >
         <ul class="p-0 slider w-full">
           <li
@@ -29,14 +29,14 @@
           </li>
         </ul>
       </div>
-      <h1>Restaurants</h1>
+      <h1 class="font-bold text-burnt">Restaurants</h1>
       <ul
         v-if="filtered && filtered.length"
-        class="flex flex-wrap p-8 filtered w-4/5"
+        class="w-full flex p-8 filtered w-4/5 max-w-full"
       >
         <li
           v-for="post in filtered"
-          class="w-full lg:w-1/2 lg:w-1/3 m-4 p-4 list-none"
+          class="m-4 list-none result flex-shrink-0"
         >
           <NuxtLink :to="post.link"
             ><img class="thumb mb-4" :src="post.media"

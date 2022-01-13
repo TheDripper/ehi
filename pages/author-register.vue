@@ -1,7 +1,8 @@
 <template>
   <div id="root" class="testtttt">
     <div :class="classes"></div>
-    <div class="flex flex-col h-screen v-screen">
+    <div class="flex h-screen v-screen items-start justify-start">
+      <div class="bg-white my-12 max-w-6xl mx-auto py-12 p-8 rounded-xl">
       <h3>Restaurant Info</h3>
       <label>Restaurant Email</label>
       <input type="text" name="restEmail" v-model="restEmail" />
@@ -27,6 +28,7 @@
         </div>
       </div>
       <input type="submit" value="Register" @click="sendSub" />
+      </div>
     </div>
   </div>
 </template>

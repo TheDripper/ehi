@@ -1,10 +1,10 @@
 <template>
-  <div id="pages" class="flex">
-    <ul class="flex flex-col w-1/5" id="facets">
-      <li class="list-none"
+  <div id="pages" class="">
+    <ul class="flex flex-wrap w-full" id="facets">
+      <li class="list-none w-1/4 flex items-center justify-start"
        v-for="(tag, index) in facets" :key="index">
         <p class="flex items-center justify-start">
-        <input class="w-auto mr-4" type="checkbox" :value="tag.id" @change="filter(tag.id)" />{{ tag.slug }}</p>
+        <input class="w-auto m-0 mr-2" type="checkbox" :value="tag.id" @change="filter(tag.id)" />{{ tag.slug }}</p>
       </li>
     </ul>
     <ul v-if="filtered && filtered.length" class="flex flex-wrap p-8 filtered w-4/5">
