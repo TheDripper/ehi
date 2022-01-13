@@ -2,14 +2,18 @@
   <div id="root" class="testtttt">
     <div :class="classes"></div>
     <div class="flex h-screen v-screen">
-      <div id="page" class="overflow-scroll w-3/4 bg-back-grey p-8">
-      <h1>{{ page.name }}</h1>
-      <h2>{{ page.category }}</h2>
-      <p>{{ page.address }}</p>
-      <p>{{ page.city }}, {{ page.state }}</p>
-      <p>{{ page.hours }}</p>
-      <p>{{ page.blurb }}</p>
-      <img :src="page.media" class="feat" />
+      <div id="page" class="overflow-scroll w-3/4 bg-back-grey p-8 spot">
+        <div class="frame">
+          <img :src="page.media" class="feat" />
+        </div>
+        <div class="bg-white rounded-xl p-8">
+          <h1 class="text-burnt">{{ page.name }}</h1>
+          <h2>{{ page.category }}</h2>
+          <p>{{ page.address }}</p>
+          <p>{{ page.city }}, {{ page.state }}</p>
+          <p>{{ page.hours }}</p>
+          <p>{{ page.blurb }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -76,7 +80,7 @@ export default {
       return this.$store.state.ajax;
     },
     page() {
-      let slug = this.$route.params.page.replace('-','');
+      let slug = this.$route.params.page.replace("-", "");
       console.log(slug);
       return this.$store.state.pages[slug];
     },
@@ -93,6 +97,15 @@ export default {
 };
 </script>
 <style lang="scss">
+.spot {
+  .frame {
+    @apply overflow-hidden flex items-center justify-center rounded-xl mb-4 w-1/2;
+    img {
+      width: auto !important;
+      height: auto !important;
+    }
+  }
+}
 #content {
   overflow-x: hidden;
   width: 100vw;

@@ -12,24 +12,18 @@
         </p>
       </li>
     </ul>
-    <ul
-      v-if="false && filtered && filtered.length"
-      class="flex flex-wrap p-8 filtered w-4/5"
-    >
-      <li v-for="post in filtered" class="w-1/3 m-4 p-4 list-none">
-        <NuxtLink :to="post.link"
-          ><img class="thumb" :src="post.media"
-        /></NuxtLink>
-        <h3 class="text-xl">{{ post.title }}</h3>
-        <p class="text-md font-bold">{{ post.blurb }}</p>
-      </li>
-    </ul>
-    <ul v-else class="flex flex-wrap p-8 search w-4/5">
-      <li v-for="page in search" class="w-1/3 m-4 p-4 list-none">
-        <NuxtLink :to="page.link"
-          ><img class="thumb" :src="page.media"
-        /></NuxtLink>
-      <p>{{ page.title }}</p>
+    <ul v-else class="flex flex-wrap p-8 article w-4/5">
+      <li
+        v-for="page in search"
+        class="flex m-4 p-4 list-none w-full items-center justify-start"
+      >
+        <div class="frame">
+          <NuxtLink :to="page.link"><img :src="page.media" /></NuxtLink>
+        </div>
+        <div class="flex flex-col">
+          <h2 class="text-burnt">{{ page.title }}</h2>
+          <p>{{ page.body }}</p>
+        </div>
       </li>
     </ul>
   </div>
@@ -93,7 +87,12 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="scss">
+.article {
+  .frame {
+    @apply w-1/3 flex-shrink-0 flex items-center justify-center rounded-xl overflow-hidden mr-4;
+  }
+}
 .search {
   list-style: none !important;
 }

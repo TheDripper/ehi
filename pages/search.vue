@@ -1,28 +1,42 @@
 <template>
   <div id="pages" class="">
     <ul class="flex flex-wrap w-full" id="facets">
-      <li class="list-none w-1/4 flex items-center justify-start"
-       v-for="(tag, index) in facets" :key="index">
+      <li
+        class="list-none w-1/4 flex items-center justify-start"
+        v-for="(tag, index) in facets"
+        :key="index"
+      >
         <p class="flex items-center justify-start">
-        <input class="w-auto m-0 mr-2" type="checkbox" :value="tag.id" @change="filter(tag.id)" />{{ tag.slug }}</p>
+          <input
+            class="w-auto m-0 mr-2"
+            type="checkbox"
+            :value="tag.id"
+            @change="filter(tag.id)"
+          />{{ tag.slug }}
+        </p>
       </li>
     </ul>
-    <ul v-if="filtered && filtered.length" class="flex flex-wrap p-8 filtered w-4/5">
-      <li v-for="post in filtered" class="w-1/3 m-4 p-4 list-none">
+    <ul
+      v-if="filtered && filtered.length"
+      class="w-full flex p-8 filtered w-4/5 max-w-full"
+    >
+      <li v-for="post in filtered" class="m-4 list-none result flex-shrink-0">
         <NuxtLink :to="post.link"
-          ><img class="thumb" :src="post.media"
+          ><img class="thumb mb-4" :src="post.media"
         /></NuxtLink>
         <h3 class="text-xl">{{ post.title }}</h3>
-        <p class="text-md font-bold">{{ post.blurb }}</p>
+        <p class="text-md">{{ post.blurb }}</p>
       </li>
     </ul>
-    <ul v-else class="flex flex-wrap p-8 search w-4/5">
-      <li v-for="page in search" class="w-1/3 m-4 p-4 list-none">
-        <NuxtLink :to="page.link"
-          ><img class="thumb" :src="page.media"
-        /></NuxtLink>
+    <ul v-else class="w-full flex p-8 search w-4/5 max-w-full">
+      <li v-for="page in searchAry" class="m-4 list-none result flex-shrink-0">
+        <div class="frame">
+          <NuxtLink :to="page.link"
+            ><img class="thumb mb-4" :src="page.media"
+          /></NuxtLink>
+        </div>
         <h3 class="text-xl">{{ page.title }}</h3>
-        <p class="text-md font-bold">{{ page.blurb }}</p>
+        <p class="text-md">{{ page.blurb }}</p>
       </li>
     </ul>
   </div>
@@ -59,11 +73,11 @@ export default {
       for (let post of filteredPosts) {
         var jstr = $("<div/>").html(post.content.rendered).text();
         var obj = JSON.parse(jstr);
-        obj.link = post.link;
+        obj.link = '/spots/' + post.slug;
         obj.title = post.title.rendered;
         filtered.push(obj);
       }
-      console.log('filtered',filtered,filtered.length);
+      console.log("filtered", filtered, filtered.length);
       this.filtered = filtered;
     },
   },
@@ -77,7 +91,7 @@ export default {
     facets() {
       return this.$store.state.facets;
     },
-    search() {
+    searchAry() {
       return this.$store.state.search;
     },
     pages() {
