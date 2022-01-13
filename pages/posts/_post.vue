@@ -2,20 +2,30 @@
   <div id="root" class="testtttt">
     <div :class="classes"></div>
     <div class="flex h-screen v-screen">
-      <div id="page" class="overflow-scroll w-3/4 bg-back-grey p-8">
-        <img :src="page.media" class="feat" />
-        <h1>{{ page.title }}</h1>
-        <p>{{ page.body }}</p>
+      <div id="page" class="bg-back-grey">
+        <div class="single mb-4">
+          <div class="frame">
+            <img :src="page.media" class="feat" />
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-8 mb-4">
+          <h1>{{ page.title }}</h1>
+          <p>{{ page.body }}</p>
+        </div>
+        <div class="bg-white rounded-xl p-8 mb-4">
         <ul v-if="comments && comments.length">
-          <h3>Comments</h3>
-          <li v-for="comment in comments">
+          <h3 class="text-burnt">Comments</h3>
+          <li v-for="comment in comments" class="list-none">
             {{ comment.content.rendered }}
           </li>
         </ul>
+        <div class="bg-white rounded-xl p-8 mb-4">
+        </div>
         <div v-if="user">
           <p>Comment</p>
           <textarea id="comment" v-model="comment"></textarea>
           <button @click="sendComment">Post Comment</button>
+        </div>
         </div>
       </div>
     </div>
@@ -140,6 +150,13 @@ export default {
 };
 </script>
 <style lang="scss">
+.single {
+  .frame {
+    @apply w-1/2 flex items-center justify-center overflow-hidden rounded-xl;
+    object-fit: contain;
+    height: 300px;
+  }
+}
 #content {
   overflow-x: hidden;
   width: 100vw;
