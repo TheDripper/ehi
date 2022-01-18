@@ -200,7 +200,7 @@ export const actions = {
 
     slugs["urls"] = urls;
     slugs["authors"] = authors;
-    commit("featRest",featRest);
+    commit("featRest", featRest);
     commit("pages", slugs);
     commit("search", search);
 
@@ -279,18 +279,23 @@ export const actions = {
     for (let post of posts) {
       var jstr = $("<div/>").html(post.content.rendered).text();
       let postslugfix = post.slug.replace("-", "");
+      let content = "";
+      let native = false;
       if (IsJsonString(post.content.rendered)) {
         var obj = JSON.parse(jstr);
         obj.id = post.id;
         postSlugs[postslugfix] = obj;
+        content = post.content.rendered;
       } else {
         postSlugs[postslugfix] = jstr;
+        content = post.content;
+        native = true;
       }
       let ary = postAuthors[post.author];
       if (typeof ary !== "object") {
         ary = [];
       }
-      let content = JSON.parse(post.content.rendered);
+      // let content = JSON.parse(post.content.rendered);
       let link = "/posts/" + post.slug;
       let newSend = {
         slug: postslugfix,
@@ -298,6 +303,7 @@ export const actions = {
         content: content,
         link: link,
         id: post.id,
+        native: native
       };
       newSend = JSON.stringify(newSend);
       ary.push(newSend);

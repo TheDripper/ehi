@@ -4,7 +4,7 @@
     <div class="flex h-screen v-screen">
       <div id="page" class="bg-back-grey">
         <div class="single mb-4">
-          <div class="frame">
+          <div v-if="page.media" class="frame">
             <img :src="page.media" class="feat" />
           </div>
         </div>

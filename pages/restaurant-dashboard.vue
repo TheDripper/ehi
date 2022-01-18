@@ -74,17 +74,7 @@ import wpapi from "wpapi";
 // import $axios from "@nuxtjs/axios";
 import axios from "axios";
 export default {
-  // async asyncData({ $axios }) {
-  //   const header = await $axios.$get("/api/pages/7");
-  //   console.log(header);
-  //   const footer = await $axios.$get("/api/pages/9");
-  //   const home = await $axios.$get("/api/pages/5");
-  //   return {
-  //     header,
-  //     footer,
-  //     home
-  //   }
-  // },
+  
   created() {},
   data() {
     return {
@@ -164,7 +154,11 @@ export default {
       let title = this.page.name;
       console.log("pageClone", pageClone);
       let restSend = JSON.stringify(pageClone);
-      let updatePage = await wp.posts().author(this.loggedin).category(183).get();
+      let updatePage = await wp
+        .posts()
+        .author(this.loggedin)
+        .category(183)
+        .get();
       updatePage = updatePage[0];
       let updated = await wp.posts().id(updatePage.id).update({
         content: restSend,
