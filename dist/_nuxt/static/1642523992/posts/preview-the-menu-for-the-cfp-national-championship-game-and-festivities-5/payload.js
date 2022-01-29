@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/posts/preview-the-menu-for-the-cfp-national-championship-game-and-festivities-5", {data:[{}],fetch:{},mutations:[]});
