@@ -39,12 +39,15 @@ export default async function asyncModule() {
       });
       if (post.featured_media) {
         let feat = await old.media().id(post.featured_media).get();
-        let featSrc = await axios.get(feat.guid.rendered);
+        let featSrc = await axios.get(feat.guid.rendered,{
+          responseType:'arraybuffer'
+        });
+        console.log(featSrc);
         featSrc = featSrc.data;
         let name = feat.slug;
         let ext = path.extname(feat.guid.rendered);
-        var data = featSrc.replace(/^data:image\/\w+;base64,/, "");
-        var buf = Buffer.from(data, 'base64');
+        // var data = featSrc.replace(/^data:image\/\w+;base64,/, "");
+        var buf = Buffer.from(featSrc, 'base64');
         fse.writeFile("./static/"+name+ext, buf,'base64');
         // let newImg = await wp.media().file(feat.guid.rendered).create();
         // wp.posts().id(newPost.id).update({
