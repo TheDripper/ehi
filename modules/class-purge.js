@@ -17,7 +17,7 @@ export default async function asyncModule() {
       // password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
       // auth: true,
     });
-    let posts = await old.posts().perPage(1).get();
+    let posts = await old.posts().perPage(10).get();
     let wp = new wpapi({
       endpoint: "https://eathereindy.nfshost.com/wp-json/",
       username: "tylerhillwebdev",
@@ -30,13 +30,22 @@ export default async function asyncModule() {
       $('figure').each(function(){
         $(this).remove();
       });
-      console.log($.html());
       let content = $.html();
+      console.log('cats',post.categories);
+      let newcats = [];
+      for (let cat of post.categories) {
+        let oldcat = await old.categories().id(cat);
+        let newcat = await wp.categories().slug(oldcat.slug).get();
+        console.log('newcat',newcat[0]);
+        newcats.push(newcat[0].id);
+      }
+        console.log('newcats',newcats);
+        newcats.push(207);
       let newPost = await wp.posts().create({
         title: post.title.rendered,
         content: content,
         author: 76,
-        categories: post.categories,
+        categories: newcats,
         status: "publish",
       });
       if (post.featured_media) {
