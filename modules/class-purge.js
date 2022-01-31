@@ -6,10 +6,6 @@ import wpapi from "wpapi";
 
 export default async function asyncModule() {
   try {
-    //   const { data } = await axios(
-    //     "https://eathereindy.nfshost.com/wp-json/wp/v2/pages/5"
-    //   );
-    //   const $ = cheerio.load(data);
     //   let classes = ['hidden'];
     //   $('.wp-block-columns, .wp-block-column, h1, h2, h3, h4, h5, h6, p, a, li').each(function(){
     //       classes.push($(this).attr('class'));
@@ -30,29 +26,38 @@ export default async function asyncModule() {
     });
 
     for (let post of posts) {
+      const $ = cheerio.load(post.content.rendered);
+      $('figure').each(function(){
+        $(this).remove();
+      });
+      console.log($.html());
+      let content = $.html();
       let newPost = await wp.posts().create({
         title: post.title.rendered,
-        content: post.content.rendered,
+        content: content,
         author: 76,
         categories: post.categories,
         status: "publish",
       });
       if (post.featured_media) {
         let feat = await old.media().id(post.featured_media).get();
-        let featSrc = await axios.get(feat.guid.rendered,{
-          responseType:'arraybuffer'
+        let featSrc = await axios.get(feat.guid.rendered, {
+          responseType: "arraybuffer",
         });
         console.log(featSrc);
         featSrc = featSrc.data;
         let name = feat.slug;
         let ext = path.extname(feat.guid.rendered);
         // var data = featSrc.replace(/^data:image\/\w+;base64,/, "");
-        var buf = Buffer.from(featSrc, 'base64');
-        fse.writeFile("./static/"+name+ext, buf,'base64');
-        // let newImg = await wp.media().file(feat.guid.rendered).create();
-        // wp.posts().id(newPost.id).update({
-        //   featured_media: feat,
-        // });
+
+        var buf = Buffer.from(featSrc, "base64");
+        let filename = "./static/" + name + ext;
+        await fse.writeFile(filename, buf, "base64");
+        let newImg = await wp.media().file(filename).create();
+        console.log("newImg", newImg);
+        wp.posts().id(newPost.id).update({
+          featured_media: newImg.id,
+        });
       }
     }
   } catch (err) {
