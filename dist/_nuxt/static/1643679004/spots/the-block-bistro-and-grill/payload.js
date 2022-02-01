@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/spots/the-block-bistro-and-grill", {data:[{}],fetch:{},mutations:[]});

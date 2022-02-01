@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/spots/liftoff-creamery", {data:[{}],fetch:{},mutations:[]});
