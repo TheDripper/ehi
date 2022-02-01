@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/posts/edwards-drive-in-closed-last-weekend-after-more-than-60-years-dashboard-diner-food-truck-remains-open-4", {data:[{}],fetch:{},mutations:[]});

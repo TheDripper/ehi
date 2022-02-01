@@ -27,23 +27,24 @@ export default async function asyncModule() {
 
     for (let post of posts) {
       const $ = cheerio.load(post.content.rendered);
-      $('figure').each(function(){
+      $("figure").each(function () {
         $(this).remove();
       });
-      let content = $.html();
-      console.log('cats',post.categories);
+      let body = $.html();
+
+      console.log("cats", post.categories);
       let newcats = [];
       for (let cat of post.categories) {
         let oldcat = await old.categories().id(cat);
         let newcat = await wp.categories().slug(oldcat.slug).get();
-        console.log('newcat',newcat[0]);
+        console.log("newcat", newcat[0]);
         newcats.push(newcat[0].id);
       }
-        console.log('newcats',newcats);
-        newcats.push(207);
+      console.log("newcats", newcats);
+      newcats.push(207);
       let newPost = await wp.posts().create({
         title: post.title.rendered,
-        content: content,
+        content: body,
         author: 76,
         categories: newcats,
         status: "publish",
@@ -64,8 +65,16 @@ export default async function asyncModule() {
         await fse.writeFile(filename, buf, "base64");
         let newImg = await wp.media().file(filename).create();
         console.log("newImg", newImg);
+        let content = {
+          body,
+          media: newImg.guid.rendered,
+          title: newPost.title.rendered,
+          link: newPost.link
+        };
+        content = JSON.stringify(content);
         wp.posts().id(newPost.id).update({
           featured_media: newImg.id,
+          content: content,
         });
       }
     }

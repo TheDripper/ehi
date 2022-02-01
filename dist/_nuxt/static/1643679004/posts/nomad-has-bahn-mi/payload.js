@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/posts/nomad-has-bahn-mi", {data:[{}],fetch:{},mutations:[]});

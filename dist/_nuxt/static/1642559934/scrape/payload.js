@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/scrape", {data:[{}],fetch:{},mutations:[]});
