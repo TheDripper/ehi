@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/posts/half-liter-bbq-just-added-a-weekend-brunch", {data:[{}],fetch:{},mutations:[]});

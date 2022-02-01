@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/posts/my-just-desserts", {data:[{}],fetch:{},mutations:[]});
