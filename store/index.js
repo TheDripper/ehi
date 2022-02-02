@@ -258,6 +258,8 @@ export const actions = {
         var obj = JSON.parse(jstr);
         let slugLink = "/posts/" + post.slug;
         obj.link = slugLink;
+        let author = await wp.users().id(post.author).get();
+        obj.author = author;
         newsSearch.push(obj);
         if (post.categories.includes(227)) {
           featNews.push(obj);

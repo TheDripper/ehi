@@ -44,6 +44,7 @@ export default async function asyncModule() {
         }
         console.log("newcats", newcats);
         newcats.push(207);
+        newcats.push(227);
         let newPost = await wp.posts().create({
           title: post.title.rendered,
           content: body,

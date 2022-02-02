@@ -1,12 +1,15 @@
 <template>
   <div id="root" class="testtttt">
     <div :class="classes"></div>
-    <input
-      class="searchbox h-12 rounded-full border-none mb-12"
-      v-model="search"
-      type="text"
-      @change="searchSend"
-    />
+    <div class="flex items-center justify-between mb-12">
+      <img id="logo" src="/ehi-logo.jpg" />
+      <input
+        class="searchbox h-12 rounded-full border-none mb-0"
+        v-model="search"
+        type="text"
+        @change="searchSend"
+      />
+    </div>
     <div>
       <div
         id="featNews"
@@ -18,13 +21,30 @@
             v-for="news in featNews"
             class="list-none flex items-center justify-start flex-shrink-0"
           >
-            <div id="slide-frame">
+            <div
+              class="
+                slide-frame
+                w-1/2
+                flex-shrink-0 flex
+                items-center
+                justify-center
+                overflow-hidden
+                rounded-xl
+              "
+            >
               <img :src="news.media" class="rounded-xl" />
             </div>
-            <div class="flex flex-col items-start justify-bewtween">
-              <h6>Trending News</h6>
-              <NuxtLink :to="{ path: '/archive' }">View More News</NuxtLink>
-              <h3>{{ news.title }}</h3>
+            <div class="title-frame">
+              <h3 class="text-burnt font-bold ml-4">{{ news.title }}</h3>
+              <div class="flex p-4">
+                <img
+                  :src="news.author.avatar_urls['96']"
+                  class="rounded-xl w-1/6 mr-4"
+                />
+                <div class="flex flex-col">
+                  <p>{{ news.author.name }}</p>
+                </div>
+              </div>
             </div>
           </li>
         </ul>
@@ -34,10 +54,7 @@
         v-if="filtered && filtered.length"
         class="w-full flex p-8 filtered w-4/5 max-w-full"
       >
-        <li
-          v-for="post in filtered"
-          class="m-4 list-none result flex-shrink-0"
-        >
+        <li v-for="post in filtered" class="m-4 list-none result flex-shrink-0">
           <NuxtLink :to="post.link"
             ><img class="thumb mb-4" :src="post.media"
           /></NuxtLink>
@@ -45,11 +62,11 @@
           <p class="text-md">{{ post.blurb }}</p>
         </li>
       </ul>
-      <ul
-        v-else
-        class="w-full flex p-8 search w-4/5 max-w-full"
-      >
-        <li v-for="page in searchAry" class="m-4 list-none result flex-shrink-0">
+      <ul v-else class="w-full flex p-8 search w-4/5 max-w-full">
+        <li
+          v-for="page in searchAry"
+          class="m-4 list-none result flex-shrink-0"
+        >
           <div class="frame">
             <NuxtLink :to="page.link"
               ><img class="thumb mb-4" :src="page.media"
@@ -170,6 +187,10 @@ export default {
 };
 </script>
 <style lang="scss">
+#logo {
+  @apply mr-4;
+  width: 45px;
+}
 .search {
   overflow-x: scroll;
 }
@@ -187,12 +208,11 @@ export default {
 }
 #featNews {
   height: 300px;
-  #slide-frame {
-    @apply flex items-center justify-center overflow-hidden;
+  .slide-frame {
     height: 300px;
     img {
-      height: 300px !important;
       width: auto !important;
+      max-width: 120% !important;
     }
   }
 }
