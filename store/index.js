@@ -118,7 +118,6 @@ export const actions = {
   },
   setUser({ commit, state }, loggedin) {
     commit("loggedin", loggedin);
-    console.log("loggedin", loggedin);
     // set myPosts
     // let wp = new wpapi({
     //   endpoint: "https://eathereindy.nfshost.com/wp-json",
@@ -216,32 +215,27 @@ export const actions = {
     let footer = slugs.footer;
     commit("footer", footer);
     const users = await wp.users().perPage(100).get();
+    const profiles = await wp.posts().categories(183).get();
     let ids = {};
     for (let user of users) {
-      console.log(user);
+      let profile = null;
+      for (let prof of profiles) {
+        if (prof.author == user.id) {
+          profile = JSON.parse(prof.content.rendered);
+        }
+      }
       ids[user.id] = {
         name: user.name,
+        profile,
       };
-      // ids.push({
-      //   id: user.id,
-      //   username: user.name,
-      //   email: user.email
-      // });
     }
     commit("users", ids);
-    // const restLog = await this.$axios.$get(
-    //   "https://eathereindy.nfshost.com/wp-json/wp/v2/pages/405"
-    // );
-    // commit("restLog", restLog);
-    // const restReg = await wp.pages().id(244).get();
     let restReg = "";
     commit("restReg", restReg);
     const restCreate = slugs.restaurantcreated;
     commit("restCreate", restCreate);
-    // const restSubmit = await wp.pages().id(461).get();
     let restSubmit = "";
     commit("restSubmit", restSubmit);
-    // const restDash = await wp.pages().id(546).get();
     let restDash = "";
     commit("restDash", restDash);
     const posts = await wp.posts().perPage(100).get();
@@ -253,13 +247,20 @@ export const actions = {
     for (let post of news) {
       var jstr = $("<div/>").html(post.content.rendered).text();
       let slugfix = post.slug.replace("-", "");
-      console.log("newspost", post);
       if (IsJsonString(post.content.rendered)) {
         var obj = JSON.parse(jstr);
         let slugLink = "/posts/" + post.slug;
         obj.link = slugLink;
-        let author = await wp.users().id(post.author).get();
-        obj.author = author;
+        // let author = await wp.users().id(post.author).get();
+        console.log("ids", ids);
+        console.log("author", post.author);
+        let profile = null;
+        if (ids[post.author] && ids[post.author].profile) {
+          profile = ids[post.author].profile;
+        }
+        // console.log('author',author);
+        // let profile = await wp.posts().categories(183).get();
+        obj.author = profile;
         newsSearch.push(obj);
         if (post.categories.includes(227)) {
           featNews.push(obj);
@@ -305,7 +306,7 @@ export const actions = {
         content: content,
         link: link,
         id: post.id,
-        native: native
+        native: native,
       };
       newSend = JSON.stringify(newSend);
       ary.push(newSend);
