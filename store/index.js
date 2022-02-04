@@ -251,6 +251,13 @@ export const actions = {
         var obj = JSON.parse(jstr);
         let slugLink = "/posts/" + post.slug;
         obj.link = slugLink;
+        let date = new Date(post.date.substring(0,10));
+        obj.date = date.toLocaleDateString("en-US",{
+          weekday: 'long',
+          day: 'numeric',
+          year: 'numeric',
+          month: 'long'
+        });
         // let author = await wp.users().id(post.author).get();
         console.log("ids", ids);
         console.log("author", post.author);

@@ -37,6 +37,14 @@
             <div class="title-frame">
               <h3 class="text-burnt font-bold ml-4">{{ news.title }}</h3>
               <div class="flex p-4">
+                <img
+                  :src="news.author.media"
+                  class="rounded-xl w-1/6 mr-4"
+                />
+                <div class="flex flex-col">
+                  <p>{{ news.author.name }}</p>
+                  <p class="text-xs text-grey">{{ news.date }}</p>
+                </div>
               </div>
             </div>
           </li>
