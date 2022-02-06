@@ -24,7 +24,9 @@
         />
         <button id="submit" type="submit" @click="senduser">Login</button>
         <NuxtLink :to="{ path: '/register' }"
-          ><button class="bg-button-grey border-none text-white">Sign Up</button></NuxtLink
+          ><button class="bg-button-grey border-none text-white">
+            Sign Up
+          </button></NuxtLink
         >
       </div>
     </div>
@@ -73,7 +75,13 @@ export default {
     });
   },
   methods: {
-    senduser() {
+    async senduser() {
+      let wp = new wpapi({
+        endpoint: "https://eathereindy.nfshost.com/wp-json",
+        username: "tylerhillwebdev",
+        password: "0MH4 CK5W 2Fm8 GUjP T4GG lHvw",
+        auth: true,
+      });
       let logged = "";
       for (let i in this.users) {
         console.log(this.users[i]);
@@ -83,7 +91,17 @@ export default {
       }
       console.log("logged", logged);
       this.setUser(logged);
-      this.$router.push("/restaurant-dashboard");
+      let profiles = await wp.posts().categories(183).get();
+      for (let profile of profiles) {
+        if (profile.author == logged && profile.categories.includes(208)) {
+          this.$router.push("/author-dashboard");
+        } else if (
+          profile.author == logged &&
+          profile.categories.includes(209)
+        ) {
+          this.$router.push("/restaurant-dashboard");
+        }
+      }
       return;
     },
     ...mapActions(["setUser"]),

@@ -209,7 +209,6 @@ export default {
         author: newUse.id,
         status: "publish",
         categories: [183,208],
-        tags: [182],
       });
       console.log(posts, posts.id);
       // let formData = new FormData();

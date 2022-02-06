@@ -229,8 +229,7 @@ export default {
         content: restSend,
         author: newUse.id,
         status: "publish",
-        categories: [183],
-        tags: [182]
+        categories: [183,209],
       });
       console.log(posts, posts.id);
       // let formData = new FormData();

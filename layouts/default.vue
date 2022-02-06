@@ -7,7 +7,7 @@
         <NuxtLink v-if="loggedin" :to="{ path: '/restaurant-dashboard' }">Profile</NuxtLink>
         <NuxtLink v-if="loggedin" :to="{ path: '/restaurant-submit' }">Submit Content</NuxtLink>
         <NuxtLink :to="{ path: '/login' }">Login</NuxtLink>
-        <NuxtLink :to="{ path: '/restaurant-register' }">Register</NuxtLink>
+        <NuxtLink :to="{ path: '/register' }">Register</NuxtLink>
         <NuxtLink :to="{ path: '/search' }">Search</NuxtLink>
         <NuxtLink :to="{ path: '/archive' }">Archive</NuxtLink>
       </ul>
