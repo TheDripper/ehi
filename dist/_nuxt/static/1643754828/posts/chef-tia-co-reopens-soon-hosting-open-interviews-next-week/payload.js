@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/posts/chef-tia-co-reopens-soon-hosting-open-interviews-next-week", {data:[{}],fetch:{},mutations:[]});

@@ -17,6 +17,7 @@ export const state = () => ({
   home: null,
   news: null,
   featNews: [],
+  userNews: [],
   featRest: [],
   subscribe: null,
   whatWeveDone: null,
@@ -78,6 +79,9 @@ export const mutations = {
   },
   featNews(state, featNews) {
     state.featNews = featNews;
+  },
+  userNews(state, userNews) {
+    state.userNews = userNews;
   },
   featRest(state, featRest) {
     state.featRest = featRest;
@@ -244,6 +248,7 @@ export const actions = {
       urls.push({ link: slugLink, title: post.title.rendered });
     }
     let featNews = [];
+    let userNews = [];
     for (let post of news) {
       var jstr = $("<div/>").html(post.content.rendered).text();
       let slugfix = post.slug.replace("-", "");
@@ -259,18 +264,20 @@ export const actions = {
           month: 'long'
         });
         // let author = await wp.users().id(post.author).get();
-        console.log("ids", ids);
-        console.log("author", post.author);
         let profile = null;
         if (ids[post.author] && ids[post.author].profile) {
           profile = ids[post.author].profile;
         }
-        // console.log('author',author);
         // let profile = await wp.posts().categories(183).get();
         obj.author = profile;
         newsSearch.push(obj);
+        console.log('categories',post.categories);
         if (post.categories.includes(227)) {
           featNews.push(obj);
+        }
+        if (post.categories.includes(255)) {
+          console.log('usernews',post);
+          userNews.push(obj);
         }
         slugs[slugfix] = obj;
         if (post.author !== 1) {
@@ -283,6 +290,7 @@ export const actions = {
       urls.push({ link: slugLink, title: post.title.rendered });
     }
     commit("featNews", featNews);
+    commit("userNews", userNews);
     commit("news", newsSearch);
     let postSlugs = {};
     let postAuthors = {};

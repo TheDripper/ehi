@@ -11,44 +11,79 @@
       />
     </div>
     <div>
-      <div
-        id="featNews"
-        v-if="featNews && featNews.length"
-        class="flex w-2/3 bg-white rounded-xl overflow-hidden mb-24"
-      >
-        <ul class="p-0 slider w-full">
-          <li
-            v-for="news in featNews"
-            class="list-none flex items-center justify-start flex-shrink-0"
-          >
-            <div
-              class="
-                slide-frame
-                w-1/2
-                flex-shrink-0 flex
-                items-center
-                justify-center
-                overflow-hidden
-                rounded-xl
-              "
+      <div class="flex">
+        <div
+          id="featNews"
+          v-if="featNews && featNews.length"
+          class="flex w-1/2 bg-white rounded-xl overflow-hidden mb-24 mr-8"
+        >
+          <ul class="p-0 slider w-full">
+            <li
+              v-for="news in featNews"
+              class="list-none flex items-center justify-start flex-shrink-0"
             >
-              <img :src="news.media" class="rounded-xl" />
-            </div>
-            <div class="title-frame">
-              <h3 class="text-burnt font-bold ml-4">{{ news.title }}</h3>
-              <div class="flex p-4">
-                <img
-                  :src="news.author.media"
-                  class="rounded-xl w-1/6 mr-4"
-                />
-                <div class="flex flex-col">
-                  <p>{{ news.author.name }}</p>
-                  <p class="text-xs text-grey">{{ news.date }}</p>
+              <div
+                class="
+                  slide-frame
+                  w-1/2
+                  flex-shrink-0 flex
+                  items-center
+                  justify-center
+                  overflow-hidden
+                  rounded-xl
+                "
+              >
+                <img :src="news.media" class="rounded-xl" />
+              </div>
+              <div class="title-frame">
+                <h3 class="text-burnt font-bold ml-4">{{ news.title }}</h3>
+                <div class="flex p-4">
+                  <img :src="news.author.media" class="rounded-xl w-1/6 mr-4" />
+                  <div class="flex flex-col">
+                    <p>{{ news.author.name }}</p>
+                    <p class="text-xs text-grey">{{ news.date }}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
+        <div
+          id="userNews"
+          v-if="userNews && userNews.length"
+          class="flex w-1/2 bg-white rounded-xl overflow-hidden mb-24"
+        >
+          <ul class="p-0 slider w-full">
+            <li
+              v-for="news in userNews"
+              class="list-none flex items-center justify-start flex-shrink-0"
+            >
+              <div
+                class="
+                  slide-frame
+                  w-1/2
+                  flex-shrink-0 flex
+                  items-center
+                  justify-center
+                  overflow-hidden
+                  rounded-xl
+                "
+              >
+                <img :src="news.media" class="rounded-xl" />
+              </div>
+              <div class="title-frame">
+                <h3 class="text-burnt font-bold ml-4">{{ news.title }}</h3>
+                <div class="flex p-4">
+                  <img :src="news.author.media" class="rounded-xl w-1/6 mr-4" />
+                  <div class="flex flex-col">
+                    <p>{{ news.author.name }}</p>
+                    <p class="text-xs text-grey">{{ news.date }}</p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
       <h1 class="font-bold text-burnt">Restaurants</h1>
       <ul
@@ -168,6 +203,9 @@ export default {
   computed: {
     featNews() {
       return this.$store.state.featNews;
+    },
+    userNews() {
+      return this.$store.state.userNews;
     },
     searchAry() {
       return this.$store.state.search;

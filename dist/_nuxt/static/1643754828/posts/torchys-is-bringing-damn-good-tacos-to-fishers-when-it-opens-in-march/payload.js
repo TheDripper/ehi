@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/posts/torchys-is-bringing-damn-good-tacos-to-fishers-when-it-opens-in-march", {data:[{}],fetch:{},mutations:[]});

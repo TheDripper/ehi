@@ -7,8 +7,8 @@ export default ({ app }, inject) => {
     slider.slick({
       prevArrow: '.left',
       nextArrow: '.right',
-      // autoplay: true,
-      // autoplaySpeed: 3000
+      autoplay: true,
+      autoplaySpeed: 3000
     });
   }
   inject("slider", slickInit);
