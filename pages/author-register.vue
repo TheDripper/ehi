@@ -199,6 +199,7 @@ export default {
       let restSend = JSON.stringify(restData);
       let newUse = await wp.users().create({
         username: this.restEmail,
+        name: this.restEmail,
         email: this.restEmail,
         password: this.restPass,
       });

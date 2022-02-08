@@ -13,19 +13,18 @@
           <p>{{ page.body }}</p>
         </div>
         <div class="bg-white rounded-xl p-8 mb-4">
-        <ul v-if="comments && comments.length">
-          <h3 class="text-burnt">Comments</h3>
-          <li v-for="comment in comments" class="list-none">
-            {{ comment.content.rendered }}
-          </li>
-        </ul>
-        <div class="bg-white rounded-xl p-8 mb-4">
-        </div>
-        <div v-if="user">
-          <p>Comment</p>
-          <textarea id="comment" v-model="comment"></textarea>
-          <button @click="sendComment">Post Comment</button>
-        </div>
+          <ul v-if="comments && comments.length">
+            <h3 class="text-burnt">Comments</h3>
+            <li v-for="comment in comments" class="list-none bg-back-grey rounded-xl m-4 p-4">
+              {{ decode(comment.content.rendered) }}
+            </li>
+          </ul>
+          <div class="bg-white rounded-xl p-8 mb-4"></div>
+          <div v-if="user">
+            <p>Comment</p>
+            <textarea id="comment" v-model="comment"></textarea>
+            <button @click="sendComment">Post Comment</button>
+          </div>
         </div>
       </div>
     </div>
@@ -39,6 +38,7 @@ import jQuery from "jquery";
 // import $axios from "@nuxtjs/axios";
 import axios from "axios";
 import wpapi from "wpapi";
+import { decode } from "html-entities";
 
 export default {
   // async asyncData({ $axios }) {
@@ -96,6 +96,9 @@ export default {
     };
   },
   methods: {
+    decode(comment) {
+      return decode(comment);
+    },
     async sendComment() {
       let wp = new wpapi({
         endpoint: "https://eathereindy.nfshost.com/wp-json/",
@@ -106,7 +109,7 @@ export default {
       let newComment = await wp.comments().create({
         post: this.page.id,
         author_email: this.user.name,
-        author_name: this.user.name,
+        author_name: this.user.profile.name,
         content: this.comment,
       });
       console.log("comment", newComment);

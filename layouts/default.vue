@@ -2,7 +2,8 @@
   <div>
     <div class="flex h-screen v-screen">
       <ul class="flex flex-col w-1/6 p-8 justify-center items-center font-bold" id="nav">
-        <p v-if="loggedin" class="text-md">You are logged in as: {{ loggedin }}</p>
+        <img :src="profile.media" />
+        <p v-if="loggedin" class="text-md">You are logged in as: {{ profile.name }}</p>
         <NuxtLink :to="{ path: '/' }">Home</NuxtLink>
         <NuxtLink v-if="loggedin" :to="{ path: '/restaurant-dashboard' }">Profile</NuxtLink>
         <NuxtLink v-if="loggedin" :to="{ path: '/restaurant-submit' }">Submit Content</NuxtLink>
@@ -86,6 +87,12 @@ export default {
     loggedin() {
       if(this.$store.state.loggedin) {
         return this.$store.state.loggedin;
+      }
+      return false;
+    },
+    profile() {
+      if(this.loggedin) {
+        return this.$store.state.users[this.loggedin].profile;
       }
       return false;
     }

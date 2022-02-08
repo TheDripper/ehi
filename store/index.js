@@ -13,6 +13,7 @@ export const state = () => ({
   posts: null,
   pages: null,
   users: [],
+  profiles: [],
   loggedin: false,
   home: null,
   news: null,
@@ -61,6 +62,9 @@ export const mutations = {
   },
   users(state, users) {
     state.users = users;
+  },
+  profiles(state, profiles) {
+    state.profiles = profiles;
   },
   loggedin(state, loggedin) {
     state.loggedin = loggedin;
@@ -221,8 +225,10 @@ export const actions = {
     const users = await wp.users().perPage(100).get();
     const profiles = await wp.posts().categories(183).get();
     let ids = {};
+    let names = {};
     for (let user of users) {
       let profile = null;
+      console.log('user',user);
       for (let prof of profiles) {
         if (prof.author == user.id) {
           profile = JSON.parse(prof.content.rendered);
@@ -232,8 +238,13 @@ export const actions = {
         name: user.name,
         profile,
       };
+      names[user.name] = {
+        id: user.id,
+        profile,
+      }
     }
     commit("users", ids);
+    commit("profiles",names);
     let restReg = "";
     commit("restReg", restReg);
     const restCreate = slugs.restaurantcreated;
@@ -271,12 +282,10 @@ export const actions = {
         // let profile = await wp.posts().categories(183).get();
         obj.author = profile;
         newsSearch.push(obj);
-        console.log('categories',post.categories);
         if (post.categories.includes(227)) {
           featNews.push(obj);
         }
         if (post.categories.includes(255)) {
-          console.log('usernews',post);
           userNews.push(obj);
         }
         slugs[slugfix] = obj;
