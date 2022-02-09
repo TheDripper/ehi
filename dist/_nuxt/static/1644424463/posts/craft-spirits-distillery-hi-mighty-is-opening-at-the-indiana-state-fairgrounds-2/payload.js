@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/posts/craft-spirits-distillery-hi-mighty-is-opening-at-the-indiana-state-fairgrounds-2", {data:[{}],fetch:{},mutations:[]});

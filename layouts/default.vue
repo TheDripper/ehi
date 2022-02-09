@@ -1,17 +1,55 @@
 <template>
   <div>
     <div class="flex h-screen v-screen">
-      <ul class="flex flex-col w-1/6 p-8 justify-center items-center font-bold" id="nav">
+      <div class="w-1/6 p-8">
+      <ul
+        class="flex flex-col justify-center items-center font-bold"
+        id="nav"
+      >
+      <div class="biopic rounded-full overflow-hidden">
         <img :src="profile.media" />
-        <p v-if="loggedin" class="text-md">You are logged in as: {{ profile.name }}</p>
+        </div>
+        <p v-if="loggedin" class="text-md text-center mb-12">
+          You are logged in as: {{ profile.name }}
+        </p>
         <NuxtLink :to="{ path: '/' }">Home</NuxtLink>
-        <NuxtLink v-if="loggedin" :to="{ path: '/restaurant-dashboard' }">Profile</NuxtLink>
-        <NuxtLink v-if="loggedin" :to="{ path: '/restaurant-submit' }">Submit Content</NuxtLink>
+        <NuxtLink v-if="loggedin" :to="{ path: '/restaurant-dashboard' }"
+          >Profile</NuxtLink
+        >
+        <NuxtLink v-if="loggedin" :to="{ path: '/restaurant-submit' }"
+          >Submit Content</NuxtLink
+        >
         <NuxtLink :to="{ path: '/login' }">Login</NuxtLink>
         <NuxtLink :to="{ path: '/register' }">Register</NuxtLink>
         <NuxtLink :to="{ path: '/search' }">Search</NuxtLink>
         <NuxtLink :to="{ path: '/archive' }">Archive</NuxtLink>
       </ul>
+      <ul class="mt-12" v-if="comments && comments.length">
+        <li
+          v-for="comment in comments"
+          class="comment list-none bg-back-grey rounded-xl m-4 p-4"
+        >
+          <p>
+            {{ decode(comment.comment.content.rendered) }}
+          </p>
+          <div class="flex">
+            <div
+              class="
+                flex
+                items-center
+                justify-center
+                biopic
+                rounded-xl
+                overflow-hidden
+              "
+            >
+              <img :src="comment.author.profile.media" />
+            </div>
+            <p>{{ comment.author.profile.name }}</p>
+          </div>
+        </li>
+      </ul>
+      </div>
       <div class="overflow-scroll w-5/6 bg-back-grey p-8">
         <Nuxt />
       </div>
@@ -19,7 +57,16 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
+.biopic {
+  width: 50px;
+  height: 50px;
+}
+.comment {
+  img {
+    width: 15px;
+  }
+}
 input,
 select,
 button {
@@ -82,21 +129,39 @@ html {
 }
 </style>
 <script>
+import { decode } from "html-entities";
 export default {
+  methods: {
+    decode(comment) {
+      return decode(comment);
+    },
+  },
   computed: {
+    comments() {
+      let comments = [];
+      for (let comment of this.$store.state.comments) {
+        let name = comment.author_name;
+        let author = this.profiles[name];
+        comments.push({ comment, author });
+      }
+      return comments;
+    },
+    profiles() {
+      return this.$store.state.profiles;
+    },
     loggedin() {
-      if(this.$store.state.loggedin) {
+      if (this.$store.state.loggedin) {
         return this.$store.state.loggedin;
       }
       return false;
     },
     profile() {
-      if(this.loggedin) {
+      if (this.loggedin) {
         return this.$store.state.users[this.loggedin].profile;
       }
       return false;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
