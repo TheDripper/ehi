@@ -185,6 +185,7 @@ export default {
         auth: true,
       });
       let restData = {
+        email: this.restEmail,
         name: this.restName,
         address: this.restAddress,
         address2: this.restAdress2,

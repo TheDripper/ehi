@@ -15,8 +15,17 @@
         <div class="bg-white rounded-xl p-8 mb-4">
           <ul v-if="comments && comments.length">
             <h3 class="text-burnt">Comments</h3>
-            <li v-for="comment in comments" class="list-none bg-back-grey rounded-xl m-4 p-4">
-              {{ decode(comment.content.rendered) }}
+            <li
+              v-for="comment in comments"
+              class="list-none bg-back-grey rounded-xl m-4 p-4"
+            >
+              <p>
+                {{ decode(comment.comment.content.rendered) }}
+              </p>
+              <div class="flex">
+                <img :src="comment.author.profile.media" />
+              <p>{{ comment.author.profile.name }}</p>
+              </div>
             </li>
           </ul>
           <div class="bg-white rounded-xl p-8 mb-4"></div>
@@ -109,7 +118,7 @@ export default {
       let newComment = await wp.comments().create({
         post: this.page.id,
         author_email: this.user.name,
-        author_name: this.user.profile.name,
+        author_name: this.user.name,
         content: this.comment,
       });
       console.log("comment", newComment);
@@ -120,7 +129,9 @@ export default {
       let comments = [];
       for (let comment of this.$store.state.comments) {
         if (comment.post == this.page.id) {
-          comments.push(comment);
+          let name = comment.author_name;
+          let author = this.profiles[name];
+          comments.push({ comment, author });
         }
       }
       return comments;
@@ -131,6 +142,9 @@ export default {
         return this.$store.state.users[loggedin];
       }
       return false;
+    },
+    profiles() {
+      return this.$store.state.profiles;
     },
     ajax() {
       return this.$store.state.ajax;
