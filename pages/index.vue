@@ -11,22 +11,33 @@
       />
     </div>
     <div>
-      <div class="flex">
+      <div class="flex flex-col md:flex-row">
         <div
           id="featNews"
           v-if="featNews && featNews.length"
-          class="flex w-1/2 bg-white rounded-xl overflow-hidden mb-24 mr-8"
+          class="
+            flex
+            w-full
+            md:w-1/2
+            bg-white
+            rounded-xl
+            overflow-hidden
+            mb-24
+            mr-8
+          "
         >
           <ul class="p-0 slider w-full">
             <li
               v-for="news in featNews"
-              class="list-none flex items-center justify-start flex-shrink-0"
+              class="list-none flex flex-col md:flex-row md:items-center md:justify-start flex-shrink-0"
             >
               <div
                 class="
                   slide-frame
-                  w-1/2
+                  w-full
+                  md:w-1/2
                   flex-shrink-0 flex
+                  flex-col
                   items-center
                   justify-center
                   overflow-hidden
@@ -35,10 +46,10 @@
               >
                 <img :src="news.media" class="rounded-xl" />
               </div>
-              <div class="title-frame">
-                <h3 class="text-burnt font-bold ml-4">{{ news.title }}</h3>
-                <div class="flex p-4">
-                  <img :src="news.author.media" class="rounded-xl w-1/6 mr-4" />
+              <div class="title-frame p-4">
+                <h3 class="text-burnt font-bold mt-4 md:mt-0 md:ml-4 text-lg md:text-xl">{{ news.title }}</h3>
+                <div class="flex py-4">
+                  <img :src="news.author.media" class="rounded-xl mr-4 biopic" />
                   <div class="flex flex-col">
                     <p>{{ news.author.name }}</p>
                     <p class="text-xs text-grey">{{ news.date }}</p>
@@ -51,18 +62,20 @@
         <div
           id="userNews"
           v-if="userNews && userNews.length"
-          class="flex w-1/2 bg-white rounded-xl overflow-hidden mb-24"
+          class="flex w-full md:w-1/2 bg-white rounded-xl overflow-hidden mb-24"
         >
           <ul class="p-0 slider w-full">
             <li
               v-for="news in userNews"
-              class="list-none flex items-center justify-start flex-shrink-0"
+              class="list-none flex flex-col md:flex-row md:items-center md:justify-start flex-shrink-0"
             >
               <div
                 class="
                   slide-frame
-                  w-1/2
+                  w-full
+                  md:w-1/2
                   flex-shrink-0 flex
+                  flex-col
                   items-center
                   justify-center
                   overflow-hidden
@@ -71,8 +84,8 @@
               >
                 <img :src="news.media" class="rounded-xl" />
               </div>
-              <div class="title-frame">
-                <h3 class="text-burnt font-bold ml-4">{{ news.title }}</h3>
+              <div class="title-frame p-4">
+                <h3 class="text-burnt font-bold mt-4 md:mt-0 md:ml-4 text-lg md:text-xl">{{ news.title }}</h3>
                 <div class="flex p-4">
                   <img :src="news.author.media" class="rounded-xl w-1/6 mr-4" />
                   <div class="flex flex-col">
@@ -226,6 +239,10 @@ export default {
 };
 </script>
 <style lang="scss">
+.biopic {
+  width: 50px;
+  height: 50px;
+}
 #logo {
   @apply mr-4;
   width: 45px;
@@ -246,12 +263,20 @@ export default {
   }
 }
 #featNews {
-  height: 300px;
+  height: 600px;
   .slide-frame {
-    height: 300px;
+    // height: 600px;
     img {
-      width: auto !important;
-      max-width: 120% !important;
+    }
+  }
+  @screen md {
+    height: 300px;
+    .slide-frame {
+      height: 300px;
+      img {
+        width: auto !important;
+        max-width: 120% !important;
+      }
     }
   }
 }
