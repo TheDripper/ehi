@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="flex h-screen v-screen">
-      <div class="w-1/6 p-8">
+    <div class="flex flex-col md:flex-row h-screen v-screen">
+      <div class="w-full md:w-1/5 p-8">
       <ul
         class="flex flex-col justify-center items-center font-bold"
         id="nav"
@@ -50,7 +50,7 @@
         </li>
       </ul>
       </div>
-      <div class="overflow-scroll w-5/6 bg-back-grey p-8">
+      <div class="overflow-scroll w-4/5 bg-back-grey p-8">
         <Nuxt />
       </div>
     </div>

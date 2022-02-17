@@ -3,22 +3,27 @@
     <div :class="classes"></div>
     <div class="flex items-center justify-between mb-12">
       <img id="logo" src="/ehi-logo.jpg" />
-      <input
-        class="searchbox h-12 rounded-full border-none mb-0"
-        v-model="search"
-        type="text"
-        @change="searchSend"
-      />
+      <div class="relative w-full">
+        <img id="glass" src="/glass.svg" />
+        <input
+          class="searchbox h-12 rounded-full border-none mb-0"
+          v-model="search"
+          type="text"
+          @change="searchSend"
+        />
+      </div>
     </div>
-    <div>
-      <div class="flex flex-col md:flex-row">
+    <div class="flex w-full">
+      <div class="news-float">
+        <div class="news-links">
+        <h5 class="text-sm font-bold">Trending News</h5>
+        <a href="/archive">Read More News</a>
+        </div>
         <div
           id="featNews"
           v-if="featNews && featNews.length"
           class="
             flex
-            w-full
-            md:w-1/2
             bg-white
             rounded-xl
             overflow-hidden
@@ -27,29 +32,27 @@
           "
         >
           <ul class="p-0 slider w-full">
-            <li
-              v-for="news in featNews"
-              class="list-none flex flex-col md:flex-row md:items-center md:justify-start flex-shrink-0"
-            >
-              <div
-                class="
-                  slide-frame
-                  w-full
-                  md:w-1/2
-                  flex-shrink-0 flex
-                  flex-col
-                  items-center
-                  justify-center
-                  overflow-hidden
-                  rounded-xl
-                "
-              >
+            <li v-for="news in featNews" class="list-none slide-frame">
+              <div class="image-frame">
                 <img :src="news.media" class="rounded-xl" />
               </div>
               <div class="title-frame p-4">
-                <h3 class="text-burnt font-bold mt-4 md:mt-0 md:ml-4 text-lg md:text-xl">{{ news.title }}</h3>
+                <h3
+                  class="
+                    text-burnt
+                    font-bold
+                    mt-4
+                    md:ml-4
+                    text-lg
+                  "
+                >
+                  {{ news.title }}
+                </h3>
                 <div class="flex py-4">
-                  <img :src="news.author.media" class="rounded-xl mr-4 biopic" />
+                  <img
+                    :src="news.author.media"
+                    class="rounded-xl mr-4 biopic"
+                  />
                   <div class="flex flex-col">
                     <p>{{ news.author.name }}</p>
                     <p class="text-xs text-grey">{{ news.date }}</p>
@@ -59,35 +62,43 @@
             </li>
           </ul>
         </div>
+        </div>
+        <div class="news-float">
         <div
           id="userNews"
           v-if="userNews && userNews.length"
-          class="flex w-full md:w-1/2 bg-white rounded-xl overflow-hidden mb-24"
+          class="flex bg-white rounded-xl overflow-hidden mb-24"
         >
+        <div class="user-links">
+        <h5 class="text-2xl text-white font-bold">New User Posts</h5>
+        <a href="/archive">View More Posts</a>
+        </div>
           <ul class="p-0 slider w-full">
             <li
               v-for="news in userNews"
-              class="list-none flex flex-col md:flex-row md:items-center md:justify-start flex-shrink-0"
+              class="list-none slide-frame user-post"
             >
-              <div
-                class="
-                  slide-frame
-                  w-full
-                  md:w-1/2
-                  flex-shrink-0 flex
-                  flex-col
-                  items-center
-                  justify-center
-                  overflow-hidden
-                  rounded-xl
-                "
-              >
+              <div class="image-frame">
                 <img :src="news.media" class="rounded-xl" />
               </div>
               <div class="title-frame p-4">
-                <h3 class="text-burnt font-bold mt-4 md:mt-0 md:ml-4 text-lg md:text-xl">{{ news.title }}</h3>
+                <h3
+                  class="
+                    text-burnt
+                    font-bold
+                    mt-4
+                    md:mt-0 md:ml-4
+                    text-lg
+                    md:text-xl
+                  "
+                >
+                  {{ news.title }}
+                </h3>
                 <div class="flex p-4">
-                  <img :src="news.author.media" class="rounded-xl w-1/6 mr-4" />
+                  <img
+                    :src="news.author.media"
+                    class="rounded-xl w-1/6 mr-4 biopic"
+                  />
                   <div class="flex flex-col">
                     <p>{{ news.author.name }}</p>
                     <p class="text-xs text-grey">{{ news.date }}</p>
@@ -97,6 +108,7 @@
             </li>
           </ul>
         </div>
+      </div>
       </div>
       <h1 class="font-bold text-burnt">Restaurants</h1>
       <ul
@@ -239,6 +251,31 @@ export default {
 };
 </script>
 <style lang="scss">
+.news-float {
+  @apply flex relative w-1/2;
+  .news-links {
+    @apply absolute z-10 pl-4;
+    top: 1rem;
+    left: 50%;
+    a {
+      @apply text-burnt underline;
+    }
+  }
+  .user-links {
+    @apply absolute z-10 pl-4;
+    top: 1rem;
+    left: 1rem;
+    a {
+      @apply text-white underline;
+    }
+  }
+}
+#glass {
+  @apply absolute z-10;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
 .biopic {
   width: 50px;
   height: 50px;
@@ -262,27 +299,19 @@ export default {
     }
   }
 }
-#featNews {
-  height: 600px;
-  .slide-frame {
-    // height: 600px;
-    img {
-    }
-  }
-  @screen md {
-    height: 300px;
-    .slide-frame {
-      height: 300px;
-      img {
-        width: auto !important;
-        max-width: 120% !important;
-      }
-    }
-  }
-}
 .searchbox {
   box-shadow: 2px 2px 4px 4px #eeeeee, -1px -1px 2px 2px #eeeeee;
-  @apply p-4;
+  @apply p-4 relative;
+  &:before {
+    @apply absolute;
+    content: "";
+    background: url("/glass.svg");
+    width: 15px;
+    height: 15px;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
 #content {
   overflow-x: hidden;
@@ -411,6 +440,42 @@ ul {
 }
 .slider {
   @apply relative;
+  height: 300px;
+  .slick-slide {
+    height: 300px;
+  }
+  .slide-frame {
+    width: 100%;
+    height: 300px;
+    display: flex !important;
+    @apply items-center justify-start;
+
+    img {
+      width: auto !important;
+      max-width: 120% !important;
+    }
+    .image-frame {
+      width: 50%;
+      @apply overflow-hidden rounded-xl;
+    }
+    .title-frame {
+      width: 50%;
+    }
+    &.user-post {
+      @apply flex-col;
+      .image-frame {
+        width: 100%;
+        img {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+      }
+      .title-frame {
+        width: 100%;
+        @apply justify-start;
+      }
+    }
+  }
   .prev {
   }
   .next {
