@@ -3,31 +3,44 @@
     <div :class="classes"></div>
     <div class="flex h-screen v-screen items-start justify-start">
       <div class="bg-white my-12 max-w-6xl mx-auto py-12 p-8 rounded-xl">
-      <h3>Restaurant Info</h3>
-      <label>Restaurant Email</label>
-      <input type="text" name="restEmail" v-model="restEmail" />
-      <label>Restaurant Password</label>
-      <input type="password" name="restPass" v-model="restPass" />
-      <label>Restaurant Name</label>
-      <input type="text" name="restName" v-model="restName" />
-      <textarea class="blurb" v-model="blurb">Introduce yourself...</textarea>
-      <h3>Profile Pic</h3>
-      <div class="container flex">
-        <hr />
-        <div class="large-12 medium-12 small-12 cell">
-          <label
-            >File Preview
-            <input
-              type="file"
-              id="file"
-              accept="image/*"
-              @change="handleFileUpload($event)"
-            />
-          </label>
-          <img class="w-1/3" v-bind:src="imagePreview" v-show="showPreview" />
+        <div class="flex">
+          <div class="stats w-1/2 pr-8">
+            <h3>Author Info</h3>
+            <label>Author Email</label>
+            <input type="text" name="restEmail" v-model="restEmail" />
+            <label>Author Password</label>
+            <input type="password" name="restPass" v-model="restPass" />
+            <label>Author Name</label>
+            <input type="text" name="restName" v-model="restName" />
+            <label>Who are you?</label>
+            <textarea class="blurb" v-model="blurb">
+Introduce yourself...</textarea
+            >
+          </div>
+          <div class="pic w-1/2">
+            <h3>Profile Pic</h3>
+            <div class="container flex">
+              <hr />
+              <div class="large-12 medium-12 small-12 cell">
+                <label
+                  >File Preview
+                  <input
+                    type="file"
+                    id="file"
+                    accept="image/*"
+                    @change="handleFileUpload($event)"
+                  />
+                </label>
+                <img
+                  class="w-1/3"
+                  v-bind:src="imagePreview"
+                  v-show="showPreview"
+                />
+              </div>
+            </div>
+            <input type="submit" value="Register" @click="sendSub" />
+          </div>
         </div>
-      </div>
-      <input type="submit" value="Register" @click="sendSub" />
       </div>
     </div>
   </div>
@@ -120,7 +133,7 @@ export default {
     //     featured_media: logo.id,
     //   });
     //   console.log(feat);
-    //   window.location.href = "/restaurant-created";
+    //   window.location.href = "/Author-created";
     //   // let postRes = await ax.$post("/oauth/request",{
     //   //   oauth_consumer_key: 'CCSXk8EYPiAd',
     //   //   oauth_consumer_secret: 'kUdeoqHd4eVNeXkvBXd8IQmupddJOWGu73iedSsZgJ2pEVEH'
@@ -210,7 +223,7 @@ export default {
         content: restSend,
         author: newUse.id,
         status: "publish",
-        categories: [183,208],
+        categories: [183, 208],
       });
       console.log(posts, posts.id);
       // let formData = new FormData();
@@ -234,7 +247,7 @@ export default {
       });
       console.log("addImg", addImg);
       this.$router.push({
-        path: "/restaurant-created",
+        path: "/Author-created",
       });
     },
   },
@@ -403,7 +416,8 @@ ul {
   }
 }
 input,
-select {
+select,
+textarea {
   @apply border border-burnt rounded w-full;
 }
 .ginput_complex {

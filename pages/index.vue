@@ -25,7 +25,8 @@
           class="
             flex
             bg-white
-            rounded-xl
+            shadow
+            rounded-3xl
             overflow-hidden
             mb-24
             mr-8
@@ -34,7 +35,7 @@
           <ul class="p-0 slider w-full">
             <li v-for="news in featNews" class="list-none slide-frame">
               <div class="image-frame">
-                <img :src="news.media" class="rounded-xl" />
+                <img :src="news.media" class="rounded-3xl" />
               </div>
               <div class="title-frame p-4">
                 <h3
@@ -51,7 +52,7 @@
                 <div class="flex py-4">
                   <img
                     :src="news.author.media"
-                    class="rounded-xl mr-4 biopic"
+                    class="rounded-3xl mr-4 biopic"
                   />
                   <div class="flex flex-col">
                     <p>{{ news.author.name }}</p>
@@ -67,7 +68,7 @@
         <div
           id="userNews"
           v-if="userNews && userNews.length"
-          class="flex bg-white rounded-xl overflow-hidden mb-24"
+          class="flex bg-white rounded-3xl overflow-hidden mb-24 shadow"
         >
         <div class="user-links">
         <h5 class="text-2xl text-white font-bold">New User Posts</h5>
@@ -79,7 +80,7 @@
               class="list-none slide-frame user-post"
             >
               <div class="image-frame">
-                <img :src="news.media" class="rounded-xl" />
+                <img :src="news.media" class="rounded-3xl" />
               </div>
               <div class="title-frame p-4">
                 <h3
@@ -97,7 +98,7 @@
                 <div class="flex p-4">
                   <img
                     :src="news.author.media"
-                    class="rounded-xl w-1/6 mr-4 biopic"
+                    class="rounded-3xl w-1/6 mr-4 biopic"
                   />
                   <div class="flex flex-col">
                     <p>{{ news.author.name }}</p>
@@ -292,12 +293,15 @@ export default {
   .frame {
     width: 100%;
     height: 150px;
-    @apply overflow-hidden flex items-center justify-center rounded-xl mb-4;
+    @apply overflow-hidden flex items-center justify-center rounded-3xl mb-4;
     img {
       width: auto !important;
       height: auto !important;
     }
   }
+}
+.shadow {
+  box-shadow: 2px 2px 4px 4px #eeeeee, -1px -1px 2px 2px #eeeeee;
 }
 .searchbox {
   box-shadow: 2px 2px 4px 4px #eeeeee, -1px -1px 2px 2px #eeeeee;
@@ -456,7 +460,7 @@ ul {
     }
     .image-frame {
       width: 50%;
-      @apply overflow-hidden rounded-xl;
+      @apply overflow-hidden rounded-3xl;
     }
     .title-frame {
       width: 50%;
