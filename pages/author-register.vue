@@ -13,7 +13,7 @@
             <label>Author Name</label>
             <input type="text" name="restName" v-model="restName" />
             <label>Who are you?</label>
-            <textarea class="blurb" v-model="blurb">
+            <textarea class="blurb w-full" v-model="blurb">
 Introduce yourself...</textarea
             >
           </div>
@@ -21,21 +21,35 @@ Introduce yourself...</textarea
             <h3>Profile Pic</h3>
             <div class="container flex">
               <hr />
-              <div class="large-12 medium-12 small-12 cell">
+              <div class="flex items-end justify-start">
+                <div
+                  class="
+                    bioframe
+                    flex
+                    items-center
+                    justify-center
+                    rounded-full
+                    overflow-hidden
+                    flex-shrink-0
+                    mt-4
+                  "
+                >
+                  <img
+                    class="w-full"
+                    v-bind:src="imagePreview"
+                    v-show="showPreview"
+                  />
+                </div>
                 <label
                   >File Preview
                   <input
                     type="file"
                     id="file"
                     accept="image/*"
+                    class="border-none"
                     @change="handleFileUpload($event)"
                   />
                 </label>
-                <img
-                  class="w-1/3"
-                  v-bind:src="imagePreview"
-                  v-show="showPreview"
-                />
               </div>
             </div>
             <input type="submit" value="Register" @click="sendSub" />
@@ -274,6 +288,10 @@ export default {
 };
 </script>
 <style lang="scss">
+.bioframe {
+  width: 150px;
+  height: 150px;
+}
 #content {
   overflow-x: hidden;
   width: 100vw;

@@ -3,52 +3,80 @@
     <div :class="classes"></div>
     <div class="flex h-screen v-screen items-start justify-start">
       <div class="bg-white my-12 max-w-6xl mx-auto py-12 p-8 rounded-xl">
-      <h3>Restaurant Info</h3>
-      <label>Restaurant Email</label>
-      <input type="text" name="restEmail" v-model="restEmail" />
-      <label>Restaurant Password</label>
-      <input type="password" name="restPass" v-model="restPass" />
-      <label>Restaurant Name</label>
-      <input type="text" name="restName" v-model="restName" />
-      <label>Restaurant Address</label>
-      <input type="text" name="restAddress" v-model="restAddress" />
-      <label>Address Line 2</label>
-      <input type="text" name="restAddress2" v-model="restAddress2" />
-      <label>City</label>
-      <input type="text" name="restCity" v-model="restCity" />
-      <label>State</label>
-      <input type="text" name="restState" v-model="restState" />
-      <label>Zip</label>
-      <input type="text" name="restZip" v-model="restZip" />
-      <label>Category</label>
-      <select name="foodType" v-model="foodType">
-        <option>Indian</option>
-        <option>Vietnamese</option>
-        <option>BBQ</option>
-      </select>
-      <label>Hours</label>
-      <p class="opacity-50">(e.g. 7am - 4pm M-F, 8-12 Sat/Sun)</p>
-      <input type="text" name="hours" v-model="hours" />
-      <textarea class="blurb" v-model="blurb">
+        <div class="flex">
+          <div class="stats w-1/2 pr-4">
+            <h3>Restaurant Info</h3>
+            <label>Restaurant Email</label>
+            <input type="text" name="restEmail" v-model="restEmail" />
+            <label>Restaurant Password</label>
+            <input type="password" name="restPass" v-model="restPass" />
+            <label>Restaurant Name</label>
+            <input type="text" name="restName" v-model="restName" />
+            <label>Restaurant Address</label>
+            <input type="text" name="restAddress" v-model="restAddress" />
+            <label>Address Line 2</label>
+            <input type="text" name="restAddress2" v-model="restAddress2" />
+            <label>City</label>
+            <input type="text" name="restCity" v-model="restCity" />
+            <label>State</label>
+            <input type="text" name="restState" v-model="restState" />
+            <label>Zip</label>
+            <input type="text" name="restZip" v-model="restZip" />
+            <label>Category</label>
+            <select name="foodType" v-model="foodType">
+              <option>Indian</option>
+              <option>Vietnamese</option>
+              <option>BBQ</option>
+            </select>
+            <label>Hours</label>
+            <p class="opacity-50">(e.g. 7am - 4pm M-F, 8-12 Sat/Sun)</p>
+            <input type="text" name="hours" v-model="hours" />
+            <label>Talk about your place</label>
+            <textarea class="blurb w-full" v-model="blurb">
 Quick blurb abour your spot...</textarea
-      >
-      <h3>Logo</h3>
-      <div class="container flex">
-        <hr />
-        <div class="large-12 medium-12 small-12 cell">
-          <label
-            >File Preview
-            <input
-              type="file"
-              id="file"
-              accept="image/*"
-              @change="handleFileUpload($event)"
-            />
-          </label>
-          <img class="w-1/3" v-bind:src="imagePreview" v-show="showPreview" />
+            >
+          </div>
+          <div class="pic w-1/2">
+            <h3>Profile Pic</h3>
+            <div class="container flex">
+              <hr />
+              <div class="flex items-end justify-start">
+                <div
+                  class="
+                    bioframe
+                    flex
+                    items-center
+                    justify-center
+                    rounded-full
+                    overflow-hidden
+                    flex-shrink-0
+                    mt-4
+                  "
+                >
+                  <img
+                    class="w-full"
+                    v-bind:src="imagePreview"
+                    v-show="showPreview"
+                  />
+                </div>
+                <label
+                  >File Preview
+                  <input
+                    type="file"
+                    id="file"
+                    accept="image/*"
+                    class="border-none"
+                    @change="handleFileUpload($event)"
+                  />
+                </label>
+              </div>
+            </div>
+            <input type="submit" value="Register" @click="sendSub" />
+          </div>
+
+
+
         </div>
-      </div>
-      <button type="submit" value="Register" @click="sendSub">Sign Up</button>
       </div>
     </div>
   </div>
@@ -229,7 +257,7 @@ export default {
         content: restSend,
         author: newUse.id,
         status: "publish",
-        categories: [183,209],
+        categories: [183, 209],
       });
       console.log(posts, posts.id);
       // let formData = new FormData();
@@ -422,7 +450,8 @@ ul {
   }
 }
 input,
-select {
+select,
+textarea {
   @apply border border-burnt rounded w-full;
 }
 .ginput_complex {
