@@ -2,7 +2,7 @@
   <div id="root" class="testtttt">
     <div :class="classes"></div>
     <div class="flex h-screen v-screen items-start justify-start">
-      <div class="bg-white my-12 max-w-6xl mx-auto py-12 p-8 rounded-xl">
+      <div class="bg-white max-w-6xl mx-auto py-12 p-8 rounded-xl">
         <div class="flex">
           <div class="stats w-1/2 pr-8">
             <h3>Author Info</h3>

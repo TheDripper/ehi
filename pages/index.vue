@@ -1,19 +1,19 @@
 <template>
   <div id="root" class="testtttt">
     <div :class="classes"></div>
-    <div class="flex items-center justify-between mb-12">
+    <div class="flex items-center justify-between mb-6">
       <img id="logo" src="/ehi-logo.jpg" />
       <div class="relative w-full">
         <img id="glass" src="/glass.svg" />
         <input
-          class="searchbox h-12 rounded-full border-none mb-0"
+          class="searchbox h-12 rounded-full border-none mb-0 pl-12"
           v-model="search"
           type="text"
           @change="searchSend"
         />
       </div>
     </div>
-    <div class="flex w-full">
+    <div class="flex w-full mb-2">
       <div class="news-float">
         <div class="news-links">
         <h5 class="text-sm font-bold">Trending News</h5>
@@ -28,7 +28,6 @@
             shadow
             rounded-3xl
             overflow-hidden
-            mb-24
             mr-8
           "
         >
@@ -68,7 +67,7 @@
         <div
           id="userNews"
           v-if="userNews && userNews.length"
-          class="flex bg-white rounded-3xl overflow-hidden mb-24 shadow"
+          class="flex bg-white rounded-3xl overflow-hidden shadow"
         >
         <div class="user-links">
         <h5 class="text-2xl text-white font-bold">New User Posts</h5>
@@ -114,7 +113,7 @@
       <h1 class="font-bold text-burnt">Restaurants</h1>
       <ul
         v-if="filtered && filtered.length"
-        class="w-full flex p-8 filtered w-4/5 max-w-full"
+        class="w-full flex filtered w-4/5 max-w-full"
       >
         <li v-for="post in filtered" class="m-4 list-none result flex-shrink-0">
           <NuxtLink :to="post.link"
@@ -124,7 +123,7 @@
           <p class="text-md">{{ post.blurb }}</p>
         </li>
       </ul>
-      <ul v-else class="w-full flex p-8 search w-4/5 max-w-full">
+      <ul v-else class="w-full flex search w-4/5 max-w-full p-0">
         <li
           v-for="page in searchAry"
           class="m-4 list-none result flex-shrink-0"
@@ -278,7 +277,7 @@ export default {
   transform: translateY(-50%);
 }
 .biopic {
-  width: 50px;
+  width: 50px !important;
   height: 50px;
 }
 #logo {
@@ -454,13 +453,13 @@ ul {
     display: flex !important;
     @apply items-center justify-start;
 
-    img {
-      width: auto !important;
-      max-width: 120% !important;
-    }
     .image-frame {
       width: 50%;
       @apply overflow-hidden rounded-3xl;
+      img {
+        width: auto !important;
+        max-width: 120% !important;
+      }
     }
     .title-frame {
       width: 50%;

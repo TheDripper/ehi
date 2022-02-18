@@ -1,8 +1,9 @@
 <template>
   <div id="pages" class="">
-    <ul class="flex flex-wrap w-full" id="facets">
+    <div class="flex">
+    <ul class="flex flex-col" id="facets">
       <li
-        class="list-none w-1/4 flex items-center justify-start"
+        class="list-none flex items-center justify-start"
         v-for="(tag, index) in facets"
         :key="index"
       >
@@ -28,7 +29,7 @@
         <p class="text-md">{{ post.blurb }}</p>
       </li>
     </ul>
-    <ul v-else class="w-full flex p-8 search w-4/5 max-w-full">
+    <ul v-else class="flex flex-col p-8 search max-w-full">
       <li v-for="page in searchAry" class="m-4 list-none result flex-shrink-0">
         <div class="frame">
           <NuxtLink :to="page.link"
@@ -39,6 +40,7 @@
         <p class="text-md">{{ page.blurb }}</p>
       </li>
     </ul>
+    </div>
   </div>
 </template>
 <script>

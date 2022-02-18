@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/posts/next-door-sobros-half-birthday-party-2", {data:[{}],fetch:{},mutations:[]});
